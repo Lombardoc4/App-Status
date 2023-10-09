@@ -1,0 +1,13 @@
+enum ResponseValues {
+  UNANSWERED
+  DECLINED
+  ACCEPTED
+}
+
+type Application @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+  company: String!
+  role: String!
+  date_applied: AWSDate!
+  response: ResponseValues @default(value: "UNANSWERED")
+}

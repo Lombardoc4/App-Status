@@ -1,0 +1,23 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-resumeroulettesandbo-staging-152532-authRole",
+      "UnauthRoleArn": "arn:aws:iam::890078463828:role/amplify-resumeroulettesandbo-staging-152532-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::890078463828:role/amplify-resumeroulettesandbo-staging-152532-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-resumeroulettesandbo-staging-152532-deployment",
+      "UnauthRoleName": "amplify-resumeroulettesandbo-staging-152532-unauthRole",
+      "StackName": "amplify-resumeroulettesandbo-staging-152532",
+      "StackId": "arn:aws:cloudformation:us-east-1:890078463828:stack/amplify-resumeroulettesandbo-staging-152532/9738b970-645c-11ee-8624-0aab69041cf7",
+      "AmplifyAppId": "d3fci9utzwg1g5"
+    },
+    "categories": {
+      "auth": {
+        "resumeroulettesandbox": {}
+      },
+      "api": {
+        "resumeroulettesandbox": {}
+      }
+    }
+  }
+}
