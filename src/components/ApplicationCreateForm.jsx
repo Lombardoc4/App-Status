@@ -1,21 +1,16 @@
-/***************************************************************************
- * The contents of this file were generated with Amplify Studio.           *
- * Please refrain from making any modifications to this file.              *
- * Any changes to this file will be overwritten when running amplify pull. *
- **************************************************************************/
 
 /* eslint-disable */
 import * as React from "react";
 import {
   Button,
+  CheckboxField,
   Divider,
   Flex,
   Grid,
   TextField,
   useTheme,
 } from "@aws-amplify/ui-react";
-import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { fetchByPath, validateField } from "./utils";
+import { fetchByPath, getOverrideProps, validateField } from "../ui-components/utils";
 import { API } from "aws-amplify";
 import { createApplication } from "../graphql/mutations";
 export default function ApplicationCreateForm(props) {
@@ -30,29 +25,32 @@ export default function ApplicationCreateForm(props) {
     overrides,
     ...rest
   } = props;
-  console.log('overrides', overrides);
   const { tokens } = useTheme();
   const initialValues = {
     role: "",
     company: "",
-    date_applied: "",
+    date_applied: new Date().toISOString().split('T')[0],
+    Field0: true,
   };
   const [role, setRole] = React.useState(initialValues.role);
   const [company, setCompany] = React.useState(initialValues.company);
   const [date_applied, setDate_applied] = React.useState(
     initialValues.date_applied
   );
+  const [Field0, setField0] = React.useState(initialValues.Field0);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setRole(initialValues.role);
     setCompany(initialValues.company);
     setDate_applied(initialValues.date_applied);
+    setField0(initialValues.Field0);
     setErrors({});
   };
   const validations = {
     role: [{ type: "Required" }],
     company: [{ type: "Required" }],
     date_applied: [{ type: "Required" }],
+    Field0: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -71,6 +69,9 @@ export default function ApplicationCreateForm(props) {
     setErrors((errors) => ({ ...errors, [fieldName]: validationResponse }));
     return validationResponse;
   };
+
+  console.log(date_applied)
+
   return (
     <Grid
       as="form"
@@ -83,6 +84,7 @@ export default function ApplicationCreateForm(props) {
           role,
           company,
           date_applied,
+          Field0,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -112,11 +114,16 @@ export default function ApplicationCreateForm(props) {
               modelFields[key] = null;
             }
           });
+          const modelFieldsToSave = {
+            role: modelFields.role,
+            company: modelFields.company,
+            date_applied: modelFields.date_applied,
+          };
           await API.graphql({
-            query: createApplication,
+            query: createApplication.replaceAll("__typename", ""),
             variables: {
               input: {
-                ...modelFields,
+                ...modelFieldsToSave,
               },
             },
           });
@@ -136,78 +143,76 @@ export default function ApplicationCreateForm(props) {
       {...getOverrideProps(overrides, "ApplicationCreateForm")}
       {...rest}
     >
-      <Grid
-        columnGap="inherit"
-        rowGap="inherit"
-        templateColumns="repeat(2, auto)"
-        {...getOverrideProps(overrides, "RowGrid0")}
-      >
-        <TextField
-          label="Role"
-          isRequired={true}
-          isReadOnly={false}
-          value={role}
-          onChange={(e) => {
-            let { value } = e.target;
-            if (onChange) {
-              const modelFields = {
-                role: value,
-                company,
-                date_applied,
-              };
-              const result = onChange(modelFields);
-              value = result?.role ?? value;
-            }
-            if (errors.role?.hasError) {
-              runValidationTasks("role", value);
-            }
-            setRole(value);
-          }}
-          onBlur={() => runValidationTasks("role", role)}
-          errorMessage={errors.role?.errorMessage}
-          hasError={errors.role?.hasError}
-          {...getOverrideProps(overrides, "role")}
-        ></TextField>
-        <TextField
-          label="Company"
-          isRequired={true}
-          isReadOnly={false}
-          value={company}
-          onChange={(e) => {
-            let { value } = e.target;
-            if (onChange) {
-              const modelFields = {
-                role,
-                company: value,
-                date_applied,
-              };
-              const result = onChange(modelFields);
-              value = result?.company ?? value;
-            }
-            if (errors.company?.hasError) {
-              runValidationTasks("company", value);
-            }
-            setCompany(value);
-          }}
-          onBlur={() => runValidationTasks("company", company)}
-          errorMessage={errors.company?.errorMessage}
-          hasError={errors.company?.hasError}
-          {...getOverrideProps(overrides, "company")}
-        ></TextField>
-      </Grid>
+      <TextField
+        label="Role"
+        isRequired={true}
+        isReadOnly={false}
+        value={role}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              role: value,
+              company,
+              date_applied,
+              Field0,
+            };
+            const result = onChange(modelFields);
+            value = result?.role ?? value;
+          }
+          if (errors.role?.hasError) {
+            runValidationTasks("role", value);
+          }
+          setRole(value);
+        }}
+        onBlur={() => runValidationTasks("role", role)}
+        errorMessage={errors.role?.errorMessage}
+        hasError={errors.role?.hasError}
+        {...getOverrideProps(overrides, "role")}
+      ></TextField>
+      <TextField
+        label="Company"
+        isRequired={true}
+        isReadOnly={false}
+        value={company}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              role,
+              company: value,
+              date_applied,
+              Field0,
+            };
+            const result = onChange(modelFields);
+            value = result?.company ?? value;
+          }
+          if (errors.company?.hasError) {
+            runValidationTasks("company", value);
+          }
+          setCompany(value);
+        }}
+        onBlur={() => runValidationTasks("company", company)}
+        errorMessage={errors.company?.errorMessage}
+        hasError={errors.company?.hasError}
+        {...getOverrideProps(overrides, "company")}
+      ></TextField>
       <TextField
         label="Date applied"
+        descriptiveText=""
         isRequired={true}
         isReadOnly={false}
         type="date"
         value={date_applied}
         onChange={(e) => {
           let { value } = e.target;
+          console.log('value', value)
           if (onChange) {
             const modelFields = {
               role,
               company,
               date_applied: value,
+              Field0,
             };
             const result = onChange(modelFields);
             value = result?.date_applied ?? value;
@@ -216,12 +221,43 @@ export default function ApplicationCreateForm(props) {
             runValidationTasks("date_applied", value);
           }
           setDate_applied(value);
+          setField0(false);
+
         }}
         onBlur={() => runValidationTasks("date_applied", date_applied)}
         errorMessage={errors.date_applied?.errorMessage}
         hasError={errors.date_applied?.hasError}
         {...getOverrideProps(overrides, "date_applied")}
       ></TextField>
+      <CheckboxField
+        label="Today"
+        name="fieldName"
+        value="fieldName"
+        checked={Field0}
+        onChange={(e) => {
+          let value = e.target.checked;
+          if (onChange) {
+            const modelFields = {
+              role,
+              company,
+              date_applied: initialValues.date_applied,
+              Field0: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.Field0 ?? value;
+            // value = result?.Field0 ?? value;
+          }
+          if (errors.Field0?.hasError) {
+            runValidationTasks("Field0", value);
+          }
+          setDate_applied(initialValues.date_applied);
+          setField0(value);
+        }}
+        onBlur={() => runValidationTasks("Field0", Field0)}
+        errorMessage={errors.Field0?.errorMessage}
+        hasError={errors.Field0?.hasError}
+        {...getOverrideProps(overrides, "Field0")}
+      ></CheckboxField>
       <Divider
         orientation="horizontal"
         {...getOverrideProps(overrides, "SectionalElement0")}

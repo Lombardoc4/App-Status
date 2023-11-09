@@ -18,7 +18,7 @@ export default Layout;
 export function DashLayout({ children }) {
     return (
         <div className='flex h-full flex-1 h-14 bg-gradient-to-br from-white to-slate-100'>
-            <div className='bg-blue-600 text-white w-1/4 p-4'>
+            <div className='bg-blue-600 text-white w-1/4 p-4 max-w-[300px]'>
                 <h2>LOGO OR SOMETHING</h2>
 
                 <div className='my-4 w-full flex flex-col gap-4'>

@@ -5,8 +5,17 @@
  **************************************************************************/
 
 import * as React from "react";
-import { DividerProps, GridProps, TextFieldProps } from "@aws-amplify/ui-react";
-import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
+import { CheckboxFieldProps, DividerProps, GridProps, TextFieldProps } from "@aws-amplify/ui-react";
+export declare type EscapeHatchProps = {
+    [elementHierarchy: string]: Record<string, unknown>;
+} | null;
+export declare type VariantValues = {
+    [key: string]: string;
+};
+export declare type Variant = {
+    variantValues: VariantValues;
+    overrides: EscapeHatchProps;
+};
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
@@ -16,19 +25,21 @@ export declare type ApplicationCreateFormInputValues = {
     role?: string;
     company?: string;
     date_applied?: string;
+    Field0?: boolean;
 };
 export declare type ApplicationCreateFormValidationValues = {
     role?: ValidationFunction<string>;
     company?: ValidationFunction<string>;
     date_applied?: ValidationFunction<string>;
+    Field0?: ValidationFunction<boolean>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type ApplicationCreateFormOverridesProps = {
     ApplicationCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
-    RowGrid0?: PrimitiveOverrideProps<GridProps>;
     role?: PrimitiveOverrideProps<TextFieldProps>;
     company?: PrimitiveOverrideProps<TextFieldProps>;
     date_applied?: PrimitiveOverrideProps<TextFieldProps>;
+    Field0?: PrimitiveOverrideProps<CheckboxFieldProps>;
     SectionalElement0?: PrimitiveOverrideProps<DividerProps>;
 } & EscapeHatchProps;
 export declare type ApplicationCreateFormProps = React.PropsWithChildren<{

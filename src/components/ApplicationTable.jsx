@@ -2,7 +2,7 @@ import { TextField, SelectField, useAuthenticator } from "@aws-amplify/ui-react"
 import { API, graphqlOperation } from "aws-amplify";
 import { listApplications } from "../graphql/queries";
 import { useEffect, useMemo, useState } from "react";
-import ApplicationCreateForm from "../ui-components/ApplicationCreateForm";
+import ApplicationCreateForm from "./ApplicationCreateForm";
 import { deleteApplication, updateApplication } from "../graphql/mutations";
 import { validateField, fetchByPath } from "../ui-components/utils";
 import { onCreateApplication, onDeleteApplication, onUpdateApplication } from "../graphql/subscriptions";
@@ -10,7 +10,7 @@ import { onCreateApplication, onDeleteApplication, onUpdateApplication } from ".
 const getApplications = async () => {
     // List all items
     const allApplications = await API.graphql({
-        query: listApplications,
+        query: listApplications
     });
     return allApplications;
 };
@@ -96,8 +96,6 @@ function ApplicationTable() {
         });
     };
 
-    console.log('applications', applications);
-
     return (
         <>
             <div className="flex gap-4 items-center mt-8 mb-4">
@@ -119,7 +117,7 @@ function ApplicationTable() {
             </div>
 
             {showForm && (
-                <div className='my-8'>
+                <div className='my-8 rounded-md bg-slate-100 w-96 shadow-lg'>
                     <ApplicationCreateForm
                         onSuccess={handleAddition}
                         onCancel={() => setShowForm(false)}
@@ -161,15 +159,15 @@ function ApplicationTable() {
                             {acceptedApps.length > 0 && <>
                                 <ApplicationHeaderRow value={'Moving Forward'}/>
 
-                                {acceptedApps.map((app) =>  <ApplicationRow application={app} />)}
+                                {acceptedApps.map((app) =>  <ApplicationRow key={`${app.role} - ${app.company}`} application={app} />)}
                             </>}
                             {ongoingApps.length > 0 && <>
                                 <ApplicationHeaderRow value={'Unanswered'}/>
-                                {ongoingApps.map((app) =>  <ApplicationRow application={app} />)}
+                                {ongoingApps.map((app) =>  <ApplicationRow key={`${app.role} - ${app.company}`} application={app} />)}
                             </>}
                             {declinedApps.length > 0 && <>
                                 <ApplicationHeaderRow value={'Declined'}/>
-                                {declinedApps.map((app) =>  <ApplicationRow application={app} />)}
+                                {declinedApps.map((app) =>  <ApplicationRow key={`${app.role} - ${app.company}`} application={app} />)}
                             </>}
                             </>}
 
@@ -184,7 +182,6 @@ function ApplicationTable() {
 }
 
 const responseIcon = (response) => {
-    console.log('response', response)
     switch (response) {
         case 'ACCEPTED':
             return '✅';
@@ -214,13 +211,12 @@ function ApplicationRow({ application }) {
         />;
     }
 
-
     return (
         <tr>
             <td className='border-b border-slate-100 px-3 py-4 text-slate-500'>{application.role}</td>
             <td className='border-b border-slate-100 px-3 py-4 text-slate-500'>{application.company}</td>
             <td className='border-b border-slate-100 px-3 py-4 text-slate-500 text-center'>{responseIcon(application.response)}</td>
-            <td className='border-b border-slate-100 px-3 py-4 text-slate-500'>{new Date(application.date_applied).toDateString()}</td>
+            <td className='border-b border-slate-100 px-3 py-4 text-slate-500'>{new Date(application.date_applied.replace(/-/g, '\/')).toDateString()}</td>
             <td className='border-b border-slate-100 px-3 py-4 text-slate-500'>
                 <div className="flex gap-2 mx-2 justify-end">
                 <button
@@ -258,6 +254,8 @@ function ApplicationRow({ application }) {
         </tr>
     );
 }
+
+
 
 function ApplicationEdit({application, cancel, onSuccess}) {
 
@@ -396,29 +394,6 @@ function ApplicationEdit({application, cancel, onSuccess}) {
                     ></TextField>
                 </td>
                 <td className='border-b border-slate-100 px-3 py-4 text-slate-500'>
-                    <TextField
-                        inputStyles={{ padding: "0.25rem 0.5rem" }}
-                        label='Date applied'
-                        labelHidden={true}
-                        isRequired={true}
-                        isReadOnly={false}
-                        type='date'
-                        value={date_applied}
-                        defaultValue={date_applied}
-                        onChange={(e) => {
-                            let { value } = e.target;
-
-                            if (errors.date_applied?.hasError) {
-                                runValidationTasks("date_applied", value);
-                            }
-                            setDate_applied(value);
-                        }}
-                        onBlur={() => runValidationTasks("date_applied", date_applied)}
-                        errorMessage={errors.date_applied?.errorMessage}
-                        hasError={errors.date_applied?.hasError}
-                    ></TextField>
-                </td>
-                <td className='border-b border-slate-100 px-3 py-4 text-slate-500'>
                     <SelectField
                         inputStyles={{ padding: "0.25rem 0.5rem" }}
                         label='Response'
@@ -441,6 +416,29 @@ function ApplicationEdit({application, cancel, onSuccess}) {
                         <option children='❌' value='DECLINED'></option>
                         <option children='✅' value='ACCEPTED'></option>
                     </SelectField>
+                </td>
+                <td className='border-b border-slate-100 px-3 py-4 text-slate-500'>
+                    <TextField
+                        inputStyles={{ padding: "0.25rem 0.5rem" }}
+                        label='Date applied'
+                        labelHidden={true}
+                        isRequired={true}
+                        isReadOnly={false}
+                        type='date'
+                        value={date_applied}
+                        defaultValue={date_applied}
+                        onChange={(e) => {
+                            let { value } = e.target;
+
+                            if (errors.date_applied?.hasError) {
+                                runValidationTasks("date_applied", value);
+                            }
+                            setDate_applied(value);
+                        }}
+                        onBlur={() => runValidationTasks("date_applied", date_applied)}
+                        errorMessage={errors.date_applied?.errorMessage}
+                        hasError={errors.date_applied?.hasError}
+                    ></TextField>
                 </td>
 
                 <td className='border-b border-slate-100 px-3 py-4 text-slate-500'>

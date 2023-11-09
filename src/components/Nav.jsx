@@ -14,13 +14,13 @@ function Nav() {
     }
 
     return (
-        <nav className='py-2 bg-slate-300'>
-            <div className='flex justify-between container mx-auto'>
-                <Link className="border py-2 px-3 rounded-md bg-blue-600 text-white shadow-inner " to='/'>RR</Link>
+        <nav className='py-3 bg-slate-300'>
+            <div className='flex justify-between mx-4'>
+                <Link className="border py-1 px-3 rounded-xl bg-blue-600 text-white shadow-inner " to='/'>RR</Link>
                 <div className='flex gap-4'>
-                    {authStatus === "authenticated" && <NavLink className="border py-2 px-3 rounded-md bg-blue-600 text-white shadow-inner " to='/dashboard'>Dashboard</NavLink>}
+                    {authStatus === "authenticated" && <NavLink className="border py-1 px-3 rounded-md bg-blue-600 text-white shadow-inner " to='/dashboard'>Dashboard</NavLink>}
                     {authStatus === "authenticated" ? (
-                        <button  className="border py-2 px-3 rounded-md border-red-500 shadow-inner"  onClick={handleSignOut}>Sign out</button>
+                        <button  className="border py-1 px-3 rounded-full bg-red-400 text-white shadow-inner"  onClick={handleSignOut}>Sign out</button>
                     ) : (
                         <NavLink to='/login'>Login</NavLink>
                     )}

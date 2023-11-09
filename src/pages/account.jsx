@@ -124,6 +124,11 @@ function Account() {
                             <p className="w-full py-1">{user.attributes.email || "----"}</p>
                         </div>
                     </div>
+
+                    <div>
+                        <h2>Devices</h2>
+                        <p>Table of devices</p>
+                    </div>
                 </>
             )}
         </DashLayout>
