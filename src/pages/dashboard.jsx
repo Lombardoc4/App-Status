@@ -20,11 +20,9 @@ function Dashboard() {
 
     return (
         <DashLayout>
-            <h1 className='text-3xl'>Dashboard de {user?.attributes.name}</h1>
+            {/* <h1 className='text-3xl'>Dashboard de {user?.attributes.name}</h1> */}
 
-            <div>
-                <ApplicationTable />
-            </div>
+            <ApplicationTable />
         </DashLayout>
     );
 }

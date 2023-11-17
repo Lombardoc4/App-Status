@@ -7,28 +7,44 @@ import Account from "./pages/account";
 
 const router = createBrowserRouter([
     {
-      path: "/",
-      element: <Layout/>,
-      children: [
-        {
-          index: true,
-          element: <App />,
-        },
-        {
-          path: "account",
-          element: <Account/>,
-        },
-        {
-          path: "dashboard",
-          element: <Dashboard/>,
-        },
-        {
-          path: "login",
-          element: <Login/>,
-        },
-      ],
+        path: "/",
+        element: <App/>,
     },
-  ]);
+    {
+        path: "/login",
+        element: <Login />,
+    },
+    {
+        path:'/*',
+        element: <Layout />,
+        children: [
+            {
+                path: "account",
+                element: <Account />,
+            },
+            {
+                path: "dashboard",
+                element: <Dashboard />,
+            },
+            {
+                path: "stats",
+                element: <h1>Stats</h1>,
+            },
+            {
+                path: "saved",
+                element: <h1>Saved for later</h1>,
+            },
+            {
+                path: "resume-generator",
+                element: <h1>Resume</h1>,
+            },
+            {
+                path: "interview-prep",
+                element: <h1>Interview Prep</h1>,
+            },
+        ],
+    },
+]);
 
 
 export default router;
