@@ -11,9 +11,10 @@ export type CreateApplicationInput = {
 };
 
 export enum ResponseValues {
-  UNANSWERED = "UNANSWERED",
+  WAITING = "WAITING",
   DECLINED = "DECLINED",
   ACCEPTED = "ACCEPTED",
+  NO_ANSWER = "NO_ANSWER",
 }
 
 

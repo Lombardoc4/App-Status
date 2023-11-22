@@ -2,34 +2,71 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DashLayout } from './layout';
-import { Auth } from 'aws-amplify';
+// import { Auth } from 'aws-amplify';
+// import { getCurrentUser } from 'aws-amplify/auth';
+import { updateUserAttribute, fetchUserAttributes } from 'aws-amplify/auth';
 
-async function updateUsername(name) {
-    const user = await Auth.currentAuthenticatedUser();
-    await Auth.updateUserAttributes(user, {
-      'name': name,
-    });
+
+async function handleUpdateUserAttribute(attributeKey, value) {
+    try {
+        const output = await updateUserAttribute({
+        userAttribute: {
+            attributeKey,
+            value
+        }
+        });
+        console.log(`attribute was successfully updated.`, output);
+        return
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+async function handleFetchUserAttributes() {
+    try {
+      const userAttributes = await fetchUserAttributes();
+      console.log(userAttributes);
+      return userAttributes
+    } catch (error) {
+      console.log(error);
+    }
   }
 
 function Account() {
-    const { user, authStatus,  } = useAuthenticator((context) => [context.user]);
-    const [nameEdit, setNameEdit] = useState(false);
+    const { user, authStatus } = useAuthenticator((context) => [context.user]);
+
+    console.log('authStatus', authStatus, user)
     const navigate = useNavigate()
+
+    const [nameEdit, setNameEdit] = useState(false);
+    const [attributes, setAttributes] = useState({});
     const nameInput = useRef(null);
 
     const handleEdit = () => {
         const newName = nameInput.current.value;
-        updateUsername(newName);
+        handleUpdateUserAttribute('name', newName).then(() => {
+            handleFetchUserAttributes()
+            .then(attrs => setAttributes(attrs))
+        });
         setNameEdit(false);
+
     }
 
     useEffect(() => {
         if (authStatus === 'unauthenticated') {
             navigate('/login')
         }
+
+        handleFetchUserAttributes()
+        .then(attrs => setAttributes(attrs))
+
+
     }, [authStatus])
 
-    if (authStatus !== 'unauthenticated' && !user) {
+    console.log(authStatus !== 'unauthenticated' && !user)
+
+    if (authStatus === 'unauthenticated' && !user) {
         return (
             <div className="border border-blue-300 shadow rounded-md p-4 max-w-sm w-full mx-auto">
             <div className="animate-pulse flex space-x-4">
@@ -51,9 +88,9 @@ function Account() {
 
     return (
         <DashLayout>
-            {user?.attributes && (
+            {attributes && (
                 <>
-                    <h1 className='text-3xl'>Welcome {user.attributes.name}</h1>
+                    <h1 className='text-3xl'>Welcome {attributes.name}</h1>
                     <div className='flex flex-col gap-4 my-8'>
                         <div>
                             <h2 className='font-bold text-xl'>Username</h2>
@@ -65,7 +102,7 @@ function Account() {
                                         type='text'
                                         ref={nameInput}
                                         autoFocus
-                                        defaultValue={user.attributes.name}
+                                        defaultValue={attributes.name}
                                     />
                                     <div className='flex gap-2 mx-2 justify-end'>
                                         <button
@@ -103,7 +140,7 @@ function Account() {
                             )}
                             {!nameEdit && (
                                 <div className='flex gap-4 w-96'>
-                                    <p className="w-full py-1">{user.attributes.name || "----"}</p>
+                                    <p className="w-full py-1">{attributes.name || "----"}</p>
                                     <button className='py-2 px-3 bg-slate-200 rounded-md' onClick={() => setNameEdit(true)}>
                                         <svg
                                             xmlns='http://www.w3.org/2000/svg'
@@ -121,7 +158,7 @@ function Account() {
 
                         <div>
                             <h2 className='font-bold text-xl'>Email</h2>
-                            <p className="w-full py-1">{user.attributes.email || "----"}</p>
+                            <p className="w-full py-1">{attributes.email || "----"}</p>
                         </div>
                     </div>
 

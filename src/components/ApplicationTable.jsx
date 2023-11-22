@@ -1,27 +1,41 @@
-import { TextField, SelectField, useAuthenticator } from "@aws-amplify/ui-react";
-import { API, graphqlOperation } from "aws-amplify";
+import { generateClient } from "aws-amplify/api";
 import { listApplications } from "../graphql/queries";
-import { useEffect, useMemo, memo, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import ApplicationCreateForm from "./ApplicationCreateForm";
 import { deleteApplication, updateApplication } from "../graphql/mutations";
-import { validateField, fetchByPath } from "../ui-components/utils";
+import { validateField } from "../ui-components/utils";
 import { onCreateApplication, onDeleteApplication, onUpdateApplication } from "../graphql/subscriptions";
 import { CheckCircleIcon, PencilIcon, PlusCircleIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { Fragment } from "react";
 import { EditProvider, useEditContext, useSetEditContext } from "../lib/useEditContext";
+import { DateInput, ResponseInput, TextInput } from "./ApplicationInputs";
+
+const client = generateClient();
 
 const getApplications = async () => {
+    console.log('intercept')
     // List all items
-    const { data } = await API.graphql({
-        query: listApplications,
+    const { data } = await client.graphql({
+        query: listApplications
     });
+
+    console.log('data', data);
 
     // date_applied is a string, this wont sort
     return data.listApplications.items;
 };
 
+const updateApp = async (values) => {
+    // Todo: try catch to return error
+    const { data } = await client.graphql({
+        query: updateApplication,
+        variables: { input: values },
+    });
+
+    return data.updateApplication;
+};
+
 const deletedApplication = async (id) => {
-    const deleted = await API.graphql({
+    const deleted = await client.graphql({
         query: deleteApplication,
         variables: {
             input: {
@@ -31,6 +45,8 @@ const deletedApplication = async (id) => {
     });
     return deleted;
 };
+
+const sortApps = (apps) => apps.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 
 const NoApps = ({ children }) => {
     <div className='h-96 bg-blue-200 text-center flex align-middle'>
@@ -43,25 +59,33 @@ function ApplicationTable() {
     const [applications, setApplications] = useState([]);
     const [searchApps, setSearchApps] = useState([]);
     const acceptedApps = useMemo(() => applications.filter((app) => app.response === "ACCEPTED"), [applications]);
-    const ongoingApps = useMemo(() => applications.filter((app) => app.response === "UNANSWERED"), [applications]);
+    const ongoingApps = useMemo(() => applications.filter((app) => app.response === "WAITING"), [applications]);
     const declinedApps = useMemo(() => applications.filter((app) => app.response === "DECLINED"), [applications]);
+    const noAnswerApps = useMemo(() => applications.filter((app) => app.response === "NO_ANSWER"), [applications]);
 
     useEffect(() => {
-        const subCreateApp = API.graphql(graphqlOperation(onCreateApplication)).subscribe({
+        const subCreateApp = client.graphql({ query: onCreateApplication }).subscribe({
             next: ({ value }) => {
                 const newApp = value.data.onCreateApplication;
-                setApplications((apps) => [newApp, ...apps]);
+                setApplications((apps) => sortApps([newApp, ...apps]));
             },
             error: (error) => console.warn(error),
         });
-        const subUpdateApp = API.graphql(graphqlOperation(onUpdateApplication)).subscribe({
-            next: ({ value }) => {
-                const updatedApp = value.data.onUpdateApplication;
-                setApplications((apps) => apps.map((app) => (app.id !== updatedApp.id ? app : updatedApp)));
-            },
-            error: (error) => console.warn(error),
-        });
-        const subDeleteApp = API.graphql(graphqlOperation(onDeleteApplication)).subscribe({
+
+        const subUpdateApp = client
+            .graphql({
+                query: onUpdateApplication,
+            })
+            .subscribe({
+                next: ({ data }) => {
+                    const updatedApp = data.onUpdateApplication;
+                    setApplications((apps) =>
+                        sortApps(apps.map((app) => (app.id !== updatedApp.id ? app : updatedApp)))
+                    );
+                },
+                error: (error) => console.warn(error),
+            });
+        const subDeleteApp = client.graphql({ query: onDeleteApplication }).subscribe({
             next: ({ value }) => {
                 const deletedApp = value.data.onDeleteApplication;
                 setApplications((apps) => apps.filter((app) => app.id !== deletedApp.id));
@@ -71,10 +95,7 @@ function ApplicationTable() {
 
         getApplications().then((data) => {
             if (Array.isArray(data)) {
-                // data.map(v => console.log('date', v.company, new Date(v.date_applied).getTime()))
-                data.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAts));
-                console.log("data", data);
-                setApplications(data);
+                setApplications(sortApps(data));
             } else {
                 // TODO : ERROR HANDLING
                 console.log("res0", data);
@@ -109,8 +130,9 @@ function ApplicationTable() {
             {searchApps.length === 0 && (
                 <>
                     {acceptedApps.length > 0 && <Table title={"Accepted"} apps={acceptedApps} />}
-                    {ongoingApps.length > 0 && <Table title={"Ongoing"} apps={ongoingApps} />}
+                    {ongoingApps.length > 0 && <Table title={"Awaiting answer"} apps={ongoingApps} />}
                     {declinedApps.length > 0 && <Table title={"Declined"} apps={declinedApps} />}
+                    {noAnswerApps.length > 0 && <Table title={"No Answer"} apps={noAnswerApps} />}
                 </>
             )}
 
@@ -123,6 +145,7 @@ function ApplicationsHeader({ appState, searchInput }) {
     const [applications, setApps] = appState;
     const [showForm, setShowForm] = useState(false);
 
+    // Todo : Migrate to own component
     const handleAddition = (addition) => {
         delete addition.Field0;
         setApps((apps) => [addition, ...apps]);
@@ -141,6 +164,7 @@ function ApplicationsHeader({ appState, searchInput }) {
             />
         </div>
     );
+    // Todo : Migrate to own component
 
     return (
         <>
@@ -170,6 +194,8 @@ function ApplicationsHeader({ appState, searchInput }) {
                     Add
                     <PlusCircleIcon className='h-5 w-5' />
                 </button>
+                <p className='ms-auto italic text-slate-400'>{applications.length} Total Apps</p>
+
             </div>
 
             {showForm && AdditionForm}
@@ -179,7 +205,7 @@ function ApplicationsHeader({ appState, searchInput }) {
 
 const Table = ({ title, apps }) => {
     return (
-        <>
+        <div className="mb-8">
             <div className='flex items-end'>
                 <h2 className='text-xl font-bold'>{title}</h2>
                 <p className='ms-auto italic text-slate-400'>{apps.length} Total Apps</p>
@@ -192,7 +218,7 @@ const Table = ({ title, apps }) => {
                     <TableRow key={app.id} app={app} selected={false} />
                 ))}
             </div>
-        </>
+        </div>
     );
 };
 
@@ -210,26 +236,44 @@ const dataKeys = ["role", "company", "response", "date_applied"];
 const convertDate = (date) => {
     return new Date(date.replace(/-/g, "/")).toDateString();
 };
+const cleanDate = (date) => {
+    return new Date(date).toISOString().split('T')[0];
+}
 
 const TableRow = ({ app }) => {
-    const handleSubmit = (val) => {
-        console.log({ ...app, ...val });
+    const initialVal = {};
+    console.log('app', app);
 
-        // Todo : Update via graphql by id;
+    for (const key of dataKeys) {
+        initialVal[key] = key === "date_applied" ? convertDate(app[key]) : app[key];
+    }
+
+    const handleSubmit = (val) => {
+        const values = {
+            // Need app id,
+            id: app.id,
+            ...initialVal,
+            // date_applied is converted in inital vals
+            date_applied: app.date_applied,
+            // Replace with updated val
+            ...val,
+        };
+
+        const data = updateApp(values);
+
+        // Todo trigger alert box, saying success or error
     };
 
     return (
         <div className='grid grid-cols-4 bg-white'>
-            {dataKeys.map((key) => {
-                const val = key === "date_applied" ? convertDate(app[key]) : app[key];
+            {Object.entries(initialVal).map(([key, value]) => {
                 return (
                     <TableCell
                         key={app.id + key}
-                        val={val}
+                        val={value}
                         id={app.id}
-                        // selected={editId === app.id + val}
+                        type={key}
                         handleSubmit={(val) => handleSubmit({ [key]: val })}
-                        // toggleEdit={() => toggleEdit(val)}
                     />
                 );
             })}
@@ -237,7 +281,7 @@ const TableRow = ({ app }) => {
     );
 };
 
-const TableCell = function TableCell({ val, id, handleSubmit }) {
+const TableCell = function TableCell({ val, id, type, handleSubmit }) {
     const editId = useEditContext();
     const setEdit = useSetEditContext();
     const cellId = id + val;
@@ -252,14 +296,13 @@ const TableCell = function TableCell({ val, id, handleSubmit }) {
     }, []);
 
     const toggleEdit = useCallback(() => {
-        console.log("togggle");
         setEdit(cellId);
     }, []);
 
     const cell = useMemo(
         () =>
             editId === cellId ? (
-                <EditCell val={val} submit={submit} cancel={toggleOff} />
+                <EditCell val={val} type={type} submit={submit} cancel={toggleOff} />
             ) : (
                 <DefaultCell val={val} toggleEdit={toggleEdit} />
             ),
@@ -284,19 +327,78 @@ const DefaultCell = ({ val, toggleEdit }) => {
     );
 };
 
-const EditCell = ({ val, submit, cancel }) => {
+const EditCell = ({ val, submit, type, cancel }) => {
     const [editVal, setEditVal] = useState(val);
+    const [error, setError] = useState("");
 
-    const handleInput = (e) => setEditVal(e.target.value);
+    const validations = {
+        company: [{ type: "Required" }],
+        role: [{ type: "Required" }],
+        date_applied: [{ type: "Required" }],
+        response: [],
+    };
+
+    const runValidationTasks = async (fieldName, value) => {
+        let validationResponse = validateField(value, validations[fieldName]);
+        console.log('validation res', validationResponse);
+        setError(validationResponse);
+        return validationResponse;
+    };
+
+    const handleSubmit = () => {
+        if (editVal === val)
+            return;
+
+        submit(editVal);
+        // setEditVal(val);
+    };
     const handleKeyDown = (e) => {
-        e.code === "Enter" && handleEdit(e.target.value);
+        console.log('e', e)
+        e.code === "Enter" && handleSubmit;
         e.code === "Escape" && cancel();
     };
 
+    const inputComponent = () => {
+        switch (type) {
+            case "response":
+                return (
+                    <ResponseInput
+                        onChange={handleKeyDown}
+                        initialVal={val}
+                        error={error}
+                        runValidationTasks={runValidationTasks}
+                        val={editVal}
+                        setVal={setEditVal}
+                    />
+                );
+            case "date_applied":
+                return (
+                    <DateInput
+                        onChange={handleKeyDown}
+                        error={error}
+                        runValidationTasks={runValidationTasks}
+                        val={cleanDate(editVal)}
+                        setVal={setEditVal}
+                    />
+                );
+            default:
+                return (
+                    <TextInput
+                        onChange={handleKeyDown}
+                        label={type}
+                        error={error}
+                        runValidationTasks={runValidationTasks}
+                        val={editVal}
+                        setVal={setEditVal}
+                    />
+                )
+        }
+    }
+
     return (
         <div className='flex justify-between items-center text-left px-3 py-2 truncate border bg-slate-100'>
-            <input className='w-5/6' type='text' value={editVal} onChange={handleInput} onKeyDown={handleKeyDown} />
-            <CheckCircleIcon onClick={() => submit(editVal)} className='h-4 w-4' />
+            {inputComponent()}
+            <CheckCircleIcon onClick={handleSubmit} className='h-4 w-4' />
         </div>
     );
 };

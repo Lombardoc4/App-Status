@@ -1,7 +1,8 @@
 enum ResponseValues {
-  UNANSWERED
+  WAITING
   DECLINED
   ACCEPTED
+  NO_ANSWER
 }
 
 type Application @model @auth(rules: [{allow: owner}]) {
@@ -9,5 +10,5 @@ type Application @model @auth(rules: [{allow: owner}]) {
   company: String!
   role: String!
   date_applied: AWSDate!
-  response: ResponseValues @default(value: "UNANSWERED")
+  response: ResponseValues @default(value: "WAITING")
 }

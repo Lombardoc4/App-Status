@@ -14,9 +14,10 @@ import {
   TextField,
 } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
-import { API } from "aws-amplify";
+import { generateClient } from "aws-amplify/api";
 import { getApplication } from "../graphql/queries";
 import { updateApplication } from "../graphql/mutations";
+const client = generateClient();
 export default function ApplicationUpdateForm(props) {
   const {
     id: idProp,
@@ -59,7 +60,7 @@ export default function ApplicationUpdateForm(props) {
     const queryData = async () => {
       const record = idProp
         ? (
-            await API.graphql({
+            await client.graphql({
               query: getApplication.replaceAll("__typename", ""),
               variables: { id: idProp },
             })
@@ -135,7 +136,7 @@ export default function ApplicationUpdateForm(props) {
               modelFields[key] = null;
             }
           });
-          await API.graphql({
+          await client.graphql({
             query: updateApplication.replaceAll("__typename", ""),
             variables: {
               input: {
@@ -273,8 +274,8 @@ export default function ApplicationUpdateForm(props) {
           {...getOverrideProps(overrides, "response")}
         >
           <option
-            children="Unanswered"
-            value="UNANSWERED"
+            children="Waiting"
+            value="WAITING"
             {...getOverrideProps(overrides, "responseoption0")}
           ></option>
           <option
@@ -286,6 +287,11 @@ export default function ApplicationUpdateForm(props) {
             children="Accepted"
             value="ACCEPTED"
             {...getOverrideProps(overrides, "responseoption2")}
+          ></option>
+          <option
+            children="No answer"
+            value="NO_ANSWER"
+            {...getOverrideProps(overrides, "responseoption3")}
           ></option>
         </SelectField>
       </Grid>

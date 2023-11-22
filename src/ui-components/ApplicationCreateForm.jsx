@@ -15,7 +15,7 @@ import {
   TextField,
   useTheme,
 } from "@aws-amplify/ui-react";
-import { fetchByPath, getOverrideProps, validateField } from "../ui-components/utils";
+import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { generateClient } from "aws-amplify/api";
 import { createApplication } from "../graphql/mutations";
 const client = generateClient();
@@ -35,8 +35,8 @@ export default function ApplicationCreateForm(props) {
   const initialValues = {
     role: "",
     company: "",
-    date_applied: new Date().toISOString().split('T')[0],
-    Field0: true,
+    date_applied: "",
+    Field0: false,
   };
   const [role, setRole] = React.useState(initialValues.role);
   const [company, setCompany] = React.useState(initialValues.company);
@@ -223,8 +223,6 @@ export default function ApplicationCreateForm(props) {
             runValidationTasks("date_applied", value);
           }
           setDate_applied(value);
-          setField0(false);
-
         }}
         onBlur={() => runValidationTasks("date_applied", date_applied)}
         errorMessage={errors.date_applied?.errorMessage}
@@ -242,7 +240,7 @@ export default function ApplicationCreateForm(props) {
             const modelFields = {
               role,
               company,
-              date_applied: initialValues.date_applied,
+              date_applied,
               Field0: value,
             };
             const result = onChange(modelFields);
@@ -251,7 +249,6 @@ export default function ApplicationCreateForm(props) {
           if (errors.Field0?.hasError) {
             runValidationTasks("Field0", value);
           }
-          setDate_applied(initialValues.date_applied);
           setField0(value);
         }}
         onBlur={() => runValidationTasks("Field0", Field0)}
