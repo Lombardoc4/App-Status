@@ -15,9 +15,9 @@ import {
   TextField,
   useTheme,
 } from "@aws-amplify/ui-react";
-import { fetchByPath, getOverrideProps, validateField } from "../ui-components/utils";
+import { fetchByPath, getOverrideProps, validateField } from "../../ui-components/utils";
 import { generateClient } from "aws-amplify/api";
-import { createApplication } from "../graphql/mutations";
+import { createApplication } from "../../graphql/mutations";
 const client = generateClient();
 export default function ApplicationCreateForm(props) {
   const {
@@ -76,6 +76,7 @@ export default function ApplicationCreateForm(props) {
     return validationResponse;
   };
   return (
+    <div className='my-8 rounded-md bg-slate-100 w-96 shadow-lg'>
     <Grid
       as="form"
       rowGap={tokens.space.xl.value}
@@ -289,5 +290,6 @@ export default function ApplicationCreateForm(props) {
         </Flex>
       </Flex>
     </Grid>
+    </div>
   );
 }

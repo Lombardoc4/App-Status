@@ -4,6 +4,8 @@ import Login from "./components/Login";
 import Dashboard from "./pages/dashboard.jsx";
 import Layout from "./pages/layout";
 import Account from "./pages/account";
+import { ResumeGenerator } from "./pages/resume-generator.jsx";
+import { StatsPage } from "./pages/stats.jsx";
 
 const router = createBrowserRouter([
     {
@@ -28,7 +30,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "stats",
-                element: <h1>Stats</h1>,
+                element: <StatsPage/>,
             },
             {
                 path: "saved",
@@ -36,7 +38,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "resume-generator",
-                element: <h1>Resume</h1>,
+                element: <ResumeGenerator/>,
             },
             {
                 path: "interview-prep",

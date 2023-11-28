@@ -11,7 +11,7 @@ export const ResponseInput = ({onChange, initialVal, error, runValidationTasks, 
           autoFocus
           placeholder={initialVal || "Please select an option"}
           isDisabled={false}
-          value={val}
+          // value={val}
           onKeyDown = {(e) =>onChange(e)}
           onChange={(e) => {
             let { value } = e.target;
@@ -23,23 +23,23 @@ export const ResponseInput = ({onChange, initialVal, error, runValidationTasks, 
           onBlur={() => runValidationTasks("response", val)}
           errorMessage={error?.errorMessage}
           hasError={error?.hasError}
+
+          borderRadius={0}
         >
           <option
-            children="Waiting"
             value="WAITING"
-          ></option>
+          >Waiting</option>
           <option
-            children="Declined"
             value="DECLINED"
-          ></option>
+          >Declined</option>
           <option
             children="Accepted"
             value="ACCEPTED"
-          ></option>
+          >Accepted!</option>
           <option
             children="No answer"
             value="NO_ANSWER"
-          ></option>
+          >Never Answered</option>
         </SelectField>
     )
 }
@@ -64,6 +64,9 @@ export const DateInput = ({onChange, error, runValidationTasks, val, setVal}) =>
           onBlur={() => runValidationTasks("date_applied", val)}
           errorMessage={error?.errorMessage}
           hasError={error?.hasError}
+
+          borderRadius={0}
+
       ></TextField>
   );
 }
@@ -87,6 +90,9 @@ export const TextInput = ({onChange, label, error, runValidationTasks, val, setV
     onBlur={() => runValidationTasks(label, val)}
     errorMessage={error?.errorMessage}
     hasError={error?.hasError}
+
+    borderRadius={0}
+
   ></TextField>
   );
 }

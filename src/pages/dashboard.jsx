@@ -1,7 +1,7 @@
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ApplicationTable from '../components/ApplicationTable';
+import ApplicationTable from '../components/Dashboard';
 
 import { DashLayout } from './layout';
 
@@ -18,13 +18,7 @@ function Dashboard() {
 
 
 
-    return (
-        <DashLayout>
-            {/* <h1 className='text-3xl'>Dashboard de {user?.attributes.name}</h1> */}
-
-            <ApplicationTable />
-        </DashLayout>
-    );
+    return <ApplicationTable />
 }
 
 export default Dashboard

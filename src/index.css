@@ -3,6 +3,17 @@
 @tailwind utilities;
 
 
+.edit-cell .amplify-select, .edit-cell .amplify-input {
+  border-radius: 0;
+  border: 0;
+}
+.edit-cell .amplify-selectfield {
+  flex: 1;
+}
+.edit-cell .amplify-label {
+  display: none;
+}
+
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

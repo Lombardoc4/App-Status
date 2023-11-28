@@ -6,4 +6,10 @@
 
 export { default as ApplicationCreateForm } from "./ApplicationCreateForm";
 export { default as ApplicationUpdateForm } from "./ApplicationUpdateForm";
+export { default as EducationCreateForm } from "./EducationCreateForm";
+export { default as EducationUpdateForm } from "./EducationUpdateForm";
+export { default as ExperienceCreateForm } from "./ExperienceCreateForm";
+export { default as ExperienceUpdateForm } from "./ExperienceUpdateForm";
+export { default as ResumeCreateForm } from "./ResumeCreateForm";
+export { default as ResumeUpdateForm } from "./ResumeUpdateForm";
 export { default as studioTheme } from "./studioTheme";

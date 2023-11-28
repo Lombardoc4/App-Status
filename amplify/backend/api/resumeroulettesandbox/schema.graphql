@@ -12,3 +12,41 @@ type Application @model @auth(rules: [{allow: owner}]) {
   date_applied: AWSDate!
   response: ResponseValues @default(value: "WAITING")
 }
+
+
+type Experience @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+  company: String!
+  role: String!
+  start_date: AWSDate!
+  end_date: AWSDate
+  description: [String]!
+}
+
+enum EducationTiers {
+  ASSOCIATES
+  BACHELORS
+  MASTERS
+  DOCTORATE
+}
+
+
+type Education @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+  school: String!
+  tier: EducationTiers!
+  completion: AWSDate!
+}
+
+type Resume @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+  fullName: String!
+  email: AWSEmail!
+  phoneNumber: AWSPhone!
+  links: AWSJSON!
+  bio: String!
+  skills: [String]!
+  employment: [Experience]! @hasMany
+  projects: [Experience]! @hasMany
+  education: [Education] @hasMany
+}

@@ -13,10 +13,13 @@
     "@aws-amplify/ui-react": "^6.0.2",
     "@heroicons/react": "^2.0.18",
     "aws-amplify": "^6.0.3",
+    "classnames": "^2.3.2",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-modal": "^3.16.1",
-    "react-router-dom": "^6.16.0"
+    "react-router-dom": "^6.16.0",
+    "recharts": "^2.10.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
