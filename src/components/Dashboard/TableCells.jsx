@@ -5,6 +5,7 @@ import { validateField } from "../../ui-components/utils";
 import { useEditContext, useSetEditContext } from "../../lib/useEditContext";
 import { DateInput, ResponseInput, TextInput } from "./ApplicationInputs";
 import { cleanDate, convertResponse } from "../../lib/utils";
+import classNames from "classnames";
 
 
 export const TableCell = function TableCell({ val, id, type, handleSubmit }) {
@@ -32,7 +33,7 @@ export const TableCell = function TableCell({ val, id, type, handleSubmit }) {
             editId === cellId ? (
                 <EditCell val={val} type={type} submit={submit} cancel={toggleOff} />
             ) : (
-                <DefaultCell val={val} toggleEdit={toggleEdit} />
+                <DefaultCell val={val} type={type} toggleEdit={toggleEdit} />
             ),
         [editId === cellId]
     );
@@ -40,17 +41,17 @@ export const TableCell = function TableCell({ val, id, type, handleSubmit }) {
     return cell;
 };
 
-export const DefaultCell = ({ val, toggleEdit }) => {
+export const DefaultCell = ({ val, type, toggleEdit }) => {
     const [hover, setHover] = useState(false);
 
     return (
         <div
-            className='flex justify-between items-center text-left px-3 py-2 truncate border hover:cursor-pointer hover:bg-slate-100'
+            className={classNames('flex justify-between items-center text-left px-3 py-2 truncate border hover:cursor-pointer hover:bg-slate-100', {"col-span-2": type === 'role'})}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
             onDoubleClick={toggleEdit}
         >
-            <div className='w-5/6 truncate'>{val}</div>
+            <div className='w-5/6 truncate' title={val}>{val}</div>
             {hover && <PencilIcon onClick={toggleEdit} className='h-4 w-4' />}
         </div>
     );

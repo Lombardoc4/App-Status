@@ -35,9 +35,8 @@ function ApplicationTables() {
 
 
     const acceptedApps = useMemo(() => applications.filter((app) => app.response === "ACCEPTED"), [applications]);
-    const ongoingApps = useMemo(() => applications.filter((app) => app.response === "WAITING"), [applications]);
-    const declinedApps = useMemo(() => applications.filter((app) => app.response === "DECLINED"), [applications]);
-    const noAnswerApps = useMemo(() => applications.filter((app) => app.response === "NO_ANSWER"), [applications]);
+    const activeApps = useMemo(() => applications.filter((app) => app.response === "WAITING"), [applications]);
+    const closedApps = useMemo(() => applications.filter((app) => app.response === "NO_ANSWER" || app.response === "DECLINED"), [applications]);
 
 
     const deleteSelectedApps = () => {
@@ -130,9 +129,9 @@ function ApplicationTables() {
                             ))}
                         </Table>
                     )}
-                    {ongoingApps.length > 0 && (
-                        <Table title={"Awaiting answer"}>
-                            {ongoingApps.map((app) => (
+                    {activeApps.length > 0 && (
+                        <Table title={"Active"}>
+                            {activeApps.map((app) => (
                                 <TableRow
                                     key={app.id}
                                     app={app}
@@ -142,21 +141,9 @@ function ApplicationTables() {
                             ))}
                         </Table>
                     )}
-                    {declinedApps.length > 0 && (
-                        <Table title={"Declined"}>
-                            {declinedApps.map((app) => (
-                                <TableRow
-                                    key={app.id}
-                                    app={app}
-                                    selected={selectedApps.includes(app.id)}
-                                    toggleSelect={() => toggleSelectApp(app.id)}
-                                />
-                            ))}
-                        </Table>
-                    )}
-                    {noAnswerApps.length > 0 && (
-                        <Table title={"No answer"}>
-                            {noAnswerApps.map((app) => (
+                    {closedApps.length > 0 && (
+                        <Table title={"Closed"} closed={true}>
+                            {closedApps.map((app) => (
                                 <TableRow
                                     key={app.id}
                                     app={app}

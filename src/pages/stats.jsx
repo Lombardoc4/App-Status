@@ -1,97 +1,52 @@
 import { useMemo } from "react";
 import { useApplicationsData } from "../lib/useApplicationsData";
 import classNames from "classnames";
-import { CartesianGrid, Line, LineChart, ReferenceLine, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import moment from "moment";
 
 const calcRecentPercentage = (applications) => {
-    const recentApps = applications.filter(app => new Date(app.date_applied) > new Date(Date.now() - 7 * 86400000))
-    const lessRecentApps = applications.filter(app => new Date(app.date_applied) > new Date(Date.now() - 14 * 86400000) && app.date_applied < new Date(Date.now() - 7 * 86400000))
+    const recentApps = applications.filter((app) => new Date(app.date_applied) > new Date(Date.now() - 7 * 86400000));
+    const lessRecentApps = applications.filter(
+        (app) =>
+            new Date(app.date_applied) > new Date(Date.now() - 14 * 86400000) &&
+            app.date_applied < new Date(Date.now() - 7 * 86400000)
+    );
 
     if (lessRecentApps.length > 0) {
-        console.log('length')
-        return  (recentApps.length / lessRecentApps.length) * 100;
+        console.log("length");
+        return (recentApps.length / lessRecentApps.length) * 100;
     } else {
         return recentApps.length * 100;
     }
 }
 
-const generateDates = (startDate, endDate) => {
-    let currDate = moment(startDate).startOf('day');
-    const dates = [currDate.format('M-D-YYYY')];
+const findRecurringCompanies = (applications) => {
+    const companyTotals = applications.reduce((acc, obj) => {
+        const { company } = obj;
+        acc[company] = (acc[company] || 0) + 1;
+        return acc;
+      }, {});
 
-    const lastDate = moment(endDate).startOf('day');
+      // Filter out items that occur only once
+      const recurringCompanies = Object.fromEntries(
+        Object.entries(companyTotals).filter(([_, quantity]) => quantity > 1)
+      );
 
-    while(currDate.add(1, 'days').diff(lastDate) < 0) {
-        // console.log(currDate.toDate());
-        dates.push(currDate.clone().format('M-D-YYYY'));
-    }
-
-    dates.push(lastDate.format('M-D-YYYY'));
-    return dates;
-};
+      return recurringCompanies;
+}
 
 export const StatsPage = () => {
     const applications = useApplicationsData();
     const companies = useMemo(() => [...new Set(applications.map(app => app.company))], [applications]);
     const percentChange = calcRecentPercentage(applications);
 
-    const chartDays = useMemo(() => {
-        if (applications.length <= 0)
-            return [];
+    const recurringCompanies = findRecurringCompanies(applications);
+    console.log('recurringCompanies', recurringCompanies);
 
-        const lastApp = applications[0].date_applied
-        const firstApp = applications[applications.length - 1].date_applied
-        return generateDates(firstApp, lastApp)
-
-        // return true
-    }, [applications])
-
-    // console.log('chartDays', chartDays && chartDays.reduce((acc, date) => {
-    //     acc[date] = {
-    //         name: date
-    //     }
-
-    //     acc[date].total = applications.filter(app => moment(app.date_applied).toISOString() === moment(date).toISOString()).length
-    //     return acc;
-    // }, {}));
-
-    // const chartData = applications.reduce((acc, app) => {
-    //     if (acc[app.date_applied]) {
-    //         acc[app.date_applied].total += 1;
-    //     } else {
-    //         acc[app.date_applied] = {
-    //             name: app.date_applied,
-    //             total: 1
-    //         }
-    //     }
-
-    //     return acc;
-    // }, {})
-    const chartDataWZeros = []
-    const chartData = chartDays && chartDays.reduce((acc, date) => {
-            acc[date] = {
-                name: date
-            }
-            const copy = {...acc[date]}
-
-            const isoDate = moment(date).toISOString();
-            const total = applications.filter(app => moment(app.date_applied).toISOString() === isoDate).length
-            // if (total) {
-                acc[date].total = total
-            // }
-
-            copy.total = total
-            chartDataWZeros.push(copy)
-            return acc;
-        }, {})
-
-    console.log('chartData', Object.values(chartData));
-    console.log('chartDays', chartDays);
-    console.log('chartDays', chartDataWZeros);
+    // console.log('chartData', Object.values(chartData));
+    // console.log('chartDays', chartDays);
+    // console.log('chartDays', chartDataWZeros);
 
     return (
-        <div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4 gap-y-8'>
+        <div className='grid md:grid-cols-1 lg:grid-cols-3 gap-4 gap-y-8'>
             <StatCard>
                 <p className='text-lg text-center'>
                     Last 7 days
@@ -113,26 +68,13 @@ export const StatsPage = () => {
                 </p>
             </StatCard>
             <StatCard>
-                <p className='text-lg text-center'>
-                    <span className='text-8xl block'>{companies.length}</span>
-                    Different Companies
-                </p>
-            </StatCard>
-            <StatCard className='col-span-4'>
-                <p>Select Interval: All</p>
-                <ResponsiveContainer width='100%' height={300}>
-                    <LineChart
-                        width={800}
-                        height={300}
-                        data={Object.values(chartData)}
-                        margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
-                    >
-                        <Line type='monotone' dataKey='total' stroke='#8884d8' connectNulls />
-                        <CartesianGrid stroke='#ccc' strokeDasharray='5 5' />
-                        <XAxis dataKey='name' interval={"preserveStartEnd"} minTickGap={100} />
-                        <YAxis />
-                    </LineChart>
-                </ResponsiveContainer>
+                    <h2 className="font-bold text-xl">Recurring Companies</h2>
+                    {Object.entries(recurringCompanies).map(([company, total]) => (
+                        <div key={company} className="flex justify-between py-2 border-b-2">
+                            <p>{company}</p>
+                            <p className="font-bold">{total}</p>
+                        </div>
+                    ))}
             </StatCard>
         </div>
     );
