@@ -1,9 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
+
 import App from './App';
 import Login from './components/Login';
-import Dashboard from './pages/dashboard.jsx';
-import Layout from './pages/layout';
+import Layout from './layout.jsx';
 import Account from './pages/account';
+import Dashboard from './pages/dashboard.jsx';
 import { ResumeGenerator } from './pages/resume-generator.jsx';
 import { StatsPage } from './pages/stats.jsx';
 
