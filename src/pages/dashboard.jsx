@@ -5,20 +5,17 @@ import ApplicationTable from '../components/Dashboard';
 
 import { DashLayout } from './layout';
 
-
 function Dashboard() {
     const { user, authStatus } = useAuthenticator((context) => [context.user]);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (authStatus === 'unauthenticated') {
-            navigate('/login')
+            navigate('/login');
         }
-    }, [authStatus])
+    }, [authStatus]);
 
-
-
-    return <ApplicationTable />
+    return <ApplicationTable />;
 }
 
-export default Dashboard
+export default Dashboard;

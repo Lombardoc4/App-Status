@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 
 export default function Login() {
     return (
-        <Authenticator variation="modal" signUpAttributes={['username']}>
+        <Authenticator variation='modal' signUpAttributes={['username']}>
             {({ user }) => (
                 <main>
                     {user && <Navigate to='/dashboard' replace={true} />}
@@ -12,5 +12,4 @@ export default function Login() {
             )}
         </Authenticator>
     );
-
 }

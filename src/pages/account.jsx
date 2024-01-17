@@ -6,38 +6,36 @@ import { DashLayout } from './layout';
 // import { getCurrentUser } from 'aws-amplify/auth';
 import { updateUserAttribute, fetchUserAttributes } from 'aws-amplify/auth';
 
-
 async function handleUpdateUserAttribute(attributeKey, value) {
     try {
         const output = await updateUserAttribute({
-        userAttribute: {
-            attributeKey,
-            value
-        }
+            userAttribute: {
+                attributeKey,
+                value,
+            },
         });
         console.log(`attribute was successfully updated.`, output);
-        return
+        return;
     } catch (error) {
         console.log(error);
     }
 }
 
-
 async function handleFetchUserAttributes() {
     try {
-      const userAttributes = await fetchUserAttributes();
-      console.log(userAttributes);
-      return userAttributes
+        const userAttributes = await fetchUserAttributes();
+        console.log(userAttributes);
+        return userAttributes;
     } catch (error) {
-      console.log(error);
+        console.log(error);
     }
-  }
+}
 
 function Account() {
     const { user, authStatus } = useAuthenticator((context) => [context.user]);
 
-    console.log('authStatus', authStatus, user)
-    const navigate = useNavigate()
+    console.log('authStatus', authStatus, user);
+    const navigate = useNavigate();
 
     const [nameEdit, setNameEdit] = useState(false);
     const [attributes, setAttributes] = useState({});
@@ -46,44 +44,39 @@ function Account() {
     const handleEdit = () => {
         const newName = nameInput.current.value;
         handleUpdateUserAttribute('name', newName).then(() => {
-            handleFetchUserAttributes()
-            .then(attrs => setAttributes(attrs))
+            handleFetchUserAttributes().then((attrs) => setAttributes(attrs));
         });
         setNameEdit(false);
-
-    }
+    };
 
     useEffect(() => {
         if (authStatus === 'unauthenticated') {
-            navigate('/login')
+            navigate('/login');
         }
 
-        handleFetchUserAttributes()
-        .then(attrs => setAttributes(attrs))
+        handleFetchUserAttributes().then((attrs) => setAttributes(attrs));
+    }, [authStatus]);
 
-
-    }, [authStatus])
-
-    console.log(authStatus !== 'unauthenticated' && !user)
+    console.log(authStatus !== 'unauthenticated' && !user);
 
     if (authStatus === 'unauthenticated' && !user) {
         return (
-            <div className="border border-blue-300 shadow rounded-md p-4 max-w-sm w-full mx-auto">
-            <div className="animate-pulse flex space-x-4">
-                <div className="rounded-full bg-slate-700 h-10 w-10"></div>
-                <div className="flex-1 space-y-6 py-1">
-                <div className="h-2 bg-slate-700 rounded"></div>
-                <div className="space-y-3">
-                    <div className="grid grid-cols-3 gap-4">
-                    <div className="h-2 bg-slate-700 rounded col-span-2"></div>
-                    <div className="h-2 bg-slate-700 rounded col-span-1"></div>
+            <div className='mx-auto w-full max-w-sm rounded-md border border-blue-300 p-4 shadow'>
+                <div className='flex animate-pulse space-x-4'>
+                    <div className='h-10 w-10 rounded-full bg-slate-700'></div>
+                    <div className='flex-1 space-y-6 py-1'>
+                        <div className='h-2 rounded bg-slate-700'></div>
+                        <div className='space-y-3'>
+                            <div className='grid grid-cols-3 gap-4'>
+                                <div className='col-span-2 h-2 rounded bg-slate-700'></div>
+                                <div className='col-span-1 h-2 rounded bg-slate-700'></div>
+                            </div>
+                            <div className='h-2 rounded bg-slate-700'></div>
+                        </div>
                     </div>
-                    <div className="h-2 bg-slate-700 rounded"></div>
-                </div>
                 </div>
             </div>
-            </div>
-        )
+        );
     }
 
     return (
@@ -91,22 +84,22 @@ function Account() {
             {attributes && (
                 <>
                     <h1 className='text-3xl'>Welcome {attributes.name}</h1>
-                    <div className='flex flex-col gap-4 my-8'>
+                    <div className='my-8 flex flex-col gap-4'>
                         <div>
-                            <h2 className='font-bold text-xl'>Username</h2>
+                            <h2 className='text-xl font-bold'>Username</h2>
                             {nameEdit && (
-                                <div className='flex gap-4 w-96'>
+                                <div className='flex w-96 gap-4'>
                                     <input
                                         className='amplify-input'
-                                        style={{padding: '0.25rem 0.5rem'}}
+                                        style={{ padding: '0.25rem 0.5rem' }}
                                         type='text'
                                         ref={nameInput}
                                         autoFocus
                                         defaultValue={attributes.name}
                                     />
-                                    <div className='flex gap-2 mx-2 justify-end'>
+                                    <div className='mx-2 flex justify-end gap-2'>
                                         <button
-                                            className='py-2 px-3 bg-slate-200 rounded-md'
+                                            className='rounded-md bg-slate-200 px-3 py-2'
                                             onClick={() => setNameEdit(false)}
                                         >
                                             <svg
@@ -121,7 +114,7 @@ function Account() {
                                             </svg>
                                         </button>
                                         <button
-                                            className='py-2 px-3 bg-green-600 text-white rounded-md'
+                                            className='rounded-md bg-green-600 px-3 py-2 text-white'
                                             onClick={() => handleEdit()}
                                         >
                                             <svg
@@ -139,9 +132,14 @@ function Account() {
                                 </div>
                             )}
                             {!nameEdit && (
-                                <div className='flex gap-4 w-96'>
-                                    <p className="w-full py-1">{attributes.name || "----"}</p>
-                                    <button className='py-2 px-3 bg-slate-200 rounded-md' onClick={() => setNameEdit(true)}>
+                                <div className='flex w-96 gap-4'>
+                                    <p className='w-full py-1'>
+                                        {attributes.name || '----'}
+                                    </p>
+                                    <button
+                                        className='rounded-md bg-slate-200 px-3 py-2'
+                                        onClick={() => setNameEdit(true)}
+                                    >
                                         <svg
                                             xmlns='http://www.w3.org/2000/svg'
                                             width='16'
@@ -157,8 +155,10 @@ function Account() {
                         </div>
 
                         <div>
-                            <h2 className='font-bold text-xl'>Email</h2>
-                            <p className="w-full py-1">{attributes.email || "----"}</p>
+                            <h2 className='text-xl font-bold'>Email</h2>
+                            <p className='w-full py-1'>
+                                {attributes.email || '----'}
+                            </p>
                         </div>
                     </div>
 
@@ -172,4 +172,4 @@ function Account() {
     );
 }
 
-export default Account
+export default Account;

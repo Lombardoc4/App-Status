@@ -1,10 +1,10 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from 'react';
 
 const EditContext = createContext(undefined);
 const SetEditContext = createContext(undefined);
 
 export const EditProvider = ({ children }) => {
-    const [editId, setEditId] = useState("");
+    const [editId, setEditId] = useState('');
 
     const handleEdit = (val) => {
         setEditId(val);

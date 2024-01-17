@@ -1,9 +1,5 @@
 function Footer() {
-    return (
-        <footer className="mt-auto">
-                This is the footer
-            </footer>
-    )
+    return <footer className='mt-auto'>This is the footer</footer>;
 }
 
 export default Footer;

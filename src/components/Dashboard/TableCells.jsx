@@ -1,22 +1,21 @@
-import { useState, useCallback, useMemo } from "react";
-import { CheckCircleIcon, PencilIcon } from "@heroicons/react/24/outline";
+import { useState, useCallback, useMemo } from 'react';
+import { CheckCircleIcon, PencilIcon } from '@heroicons/react/24/outline';
 
-import { validateField } from "../../ui-components/utils";
-import { useEditContext, useSetEditContext } from "../../lib/useEditContext";
-import { DateInput, ResponseInput, TextInput } from "./ApplicationInputs";
-import { cleanDate, convertResponse } from "../../lib/utils";
-import classNames from "classnames";
-
+import { validateField } from '../../ui-components/utils';
+import { useEditContext, useSetEditContext } from '../../lib/useEditContext';
+import { DateInput, ResponseInput, TextInput } from './ApplicationInputs';
+import { cleanDate, convertResponse } from '../../lib/utils';
+import classNames from 'classnames';
 
 export const TableCell = function TableCell({ val, id, type, handleSubmit }) {
     const editId = useEditContext();
     const setEdit = useSetEditContext();
 
     const cellId = id + val;
-    val = type === 'response' ? convertResponse(val) : val
+    val = type === 'response' ? convertResponse(val) : val;
 
     const toggleOff = useCallback(() => {
-        setEdit("");
+        setEdit('');
     }, []);
 
     const submit = useCallback((val) => {
@@ -31,11 +30,16 @@ export const TableCell = function TableCell({ val, id, type, handleSubmit }) {
     const cell = useMemo(
         () =>
             editId === cellId ? (
-                <EditCell val={val} type={type} submit={submit} cancel={toggleOff} />
+                <EditCell
+                    val={val}
+                    type={type}
+                    submit={submit}
+                    cancel={toggleOff}
+                />
             ) : (
                 <DefaultCell val={val} type={type} toggleEdit={toggleEdit} />
             ),
-        [editId === cellId]
+        [editId === cellId],
     );
 
     return cell;
@@ -46,12 +50,17 @@ export const DefaultCell = ({ val, type, toggleEdit }) => {
 
     return (
         <div
-            className={classNames('flex justify-between items-center text-left px-3 py-2 truncate border hover:cursor-pointer hover:bg-slate-100', {"col-span-2": type === 'role'})}
+            className={classNames(
+                'flex items-center justify-between truncate border px-3 py-2 text-left hover:cursor-pointer hover:bg-slate-100',
+                { 'col-span-2': type === 'role' },
+            )}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
             onDoubleClick={toggleEdit}
         >
-            <div className='w-5/6 truncate' title={val}>{val}</div>
+            <div className='w-5/6 truncate' title={val}>
+                {val}
+            </div>
             {hover && <PencilIcon onClick={toggleEdit} className='h-4 w-4' />}
         </div>
     );
@@ -59,12 +68,12 @@ export const DefaultCell = ({ val, type, toggleEdit }) => {
 
 export const EditCell = ({ val, submit, type, cancel }) => {
     const [editVal, setEditVal] = useState(val);
-    const [error, setError] = useState("");
+    const [error, setError] = useState('');
 
     const validations = {
-        company: [{ type: "Required" }],
-        role: [{ type: "Required" }],
-        date_applied: [{ type: "Required" }],
+        company: [{ type: 'Required' }],
+        role: [{ type: 'Required' }],
+        date_applied: [{ type: 'Required' }],
         response: [],
     };
 
@@ -85,8 +94,8 @@ export const EditCell = ({ val, submit, type, cancel }) => {
     };
 
     const handleKeyDown = (e) => {
-        e.code === "Enter" && handleSubmit;
-        e.code === "Escape" && cancel();
+        e.code === 'Enter' && handleSubmit;
+        e.code === 'Escape' && cancel();
     };
 
     const inputProps = {
@@ -95,37 +104,22 @@ export const EditCell = ({ val, submit, type, cancel }) => {
         runValidationTasks: runValidationTasks,
         error: error,
         setVal: setEditVal,
-        val: editVal
-    }
+        val: editVal,
+    };
 
     const inputComponent = () => {
         switch (type) {
-            case "response":
-                return (
-                    <ResponseInput
-                        {...inputProps}
-                        initialVal={val}
-                    />
-                );
-            case "date_applied":
-                return (
-                    <DateInput
-                        {...inputProps}
-                        val={cleanDate(editVal)}
-                    />
-                );
+            case 'response':
+                return <ResponseInput {...inputProps} initialVal={val} />;
+            case 'date_applied':
+                return <DateInput {...inputProps} val={cleanDate(editVal)} />;
             default:
-                return (
-                    <TextInput
-                        {...inputProps}
-                        label={type}
-                    />
-                )
+                return <TextInput {...inputProps} label={type} />;
         }
-    }
+    };
 
     return (
-        <div className='edit-cell flex justify-between gap-2 pr-2 items-center text-left border border-blue-600 bg-blue-100'>
+        <div className='edit-cell flex items-center justify-between gap-2 border border-blue-600 bg-blue-100 pr-2 text-left'>
             {inputComponent()}
             <CheckCircleIcon onClick={handleSubmit} className='h-8 w-8' />
         </div>

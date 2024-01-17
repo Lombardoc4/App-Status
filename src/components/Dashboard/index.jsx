@@ -1,29 +1,28 @@
-import { useEffect, useMemo, useState, useRef  } from "react";
-import { EditProvider } from "../../lib/useEditContext";
-import { NoApps } from "./NoApps";
-import { deleteApp } from "../../lib/utils";
-import { ApplicationsHeader } from "./Header";
-import { TableRow } from "./TableRow";
-import { Table } from "./Table";
-import { BulkAction } from "./BulkAction";
-import { useApplicationsData } from "../../lib/useApplicationsData";
-import { useAlertContext } from "../../lib/useAlertContext";
+import { useEffect, useMemo, useState, useRef } from 'react';
+import { EditProvider } from '../../lib/useEditContext';
+import { NoApps } from './NoApps';
+import { deleteApp } from '../../lib/utils';
+import { ApplicationsHeader } from './Header';
+import { TableRow } from './TableRow';
+import { Table } from './Table';
+import { BulkAction } from './BulkAction';
+import { useApplicationsData } from '../../lib/useApplicationsData';
+import { useAlertContext } from '../../lib/useAlertContext';
 
-
-const sortByResponse = (a,b) => {
-    let res = 1
-    if (a.response === b.response)
-        res= 0;
-    else if (a.response === 'ACCEPTED')
-        res = -1;
-    else if (a.response === 'WAITING' && b.response !== 'ACCEPTED')
-        res = -1;
-    else if (a.response === 'DECLINED' && (b.response !== "WAITING" && b.response !== 'ACCEPTED'))
+const sortByResponse = (a, b) => {
+    let res = 1;
+    if (a.response === b.response) res = 0;
+    else if (a.response === 'ACCEPTED') res = -1;
+    else if (a.response === 'WAITING' && b.response !== 'ACCEPTED') res = -1;
+    else if (
+        a.response === 'DECLINED' &&
+        b.response !== 'WAITING' &&
+        b.response !== 'ACCEPTED'
+    )
         res = -1;
 
     return res;
-}
-
+};
 
 function ApplicationTables() {
     const applications = useApplicationsData();
@@ -31,65 +30,85 @@ function ApplicationTables() {
     const [filterApps, setFilterApps] = useState([]);
     const [selectedApps, setSelectedApps] = useState([]);
 
-    const {updateAlert} = useAlertContext()
+    const { updateAlert } = useAlertContext();
 
-
-    const acceptedApps = useMemo(() => applications.filter((app) => app.response === "ACCEPTED"), [applications]);
-    const activeApps = useMemo(() => applications.filter((app) => app.response === "WAITING"), [applications]);
-    const closedApps = useMemo(() => applications.filter((app) => app.response === "NO_ANSWER" || app.response === "DECLINED"), [applications]);
-
+    const acceptedApps = useMemo(
+        () => applications.filter((app) => app.response === 'ACCEPTED'),
+        [applications],
+    );
+    const activeApps = useMemo(
+        () => applications.filter((app) => app.response === 'WAITING'),
+        [applications],
+    );
+    const closedApps = useMemo(
+        () =>
+            applications.filter(
+                (app) =>
+                    app.response === 'NO_ANSWER' || app.response === 'DECLINED',
+            ),
+        [applications],
+    );
 
     const deleteSelectedApps = () => {
-        const responses = selectedApps.map(app => deleteApp(app));
+        const responses = selectedApps.map((app) => deleteApp(app));
 
-        Promise.all(responses).then((res) => {
-            updateAlert({
-                type: 'success',
-                msg: 'Items deleted successfully'
+        Promise.all(responses)
+            .then((res) => {
+                updateAlert({
+                    type: 'success',
+                    msg: 'Items deleted successfully',
+                });
+
+                setSelectedApps([]);
             })
+            .catch((err) => {
+                updateAlert({
+                    type: 'error',
+                    msg: 'Items could not be deleted',
+                });
+                console.log('error', err);
+            });
+    };
 
-            setSelectedApps([]);
-        }).catch( err => {
-            updateAlert({
-                type: 'error',
-                msg: 'Items could not be deleted'
-            })
-            console.log('error', err)
-        })
-    }
-
-    const BulkActionEl = <BulkAction
-                        selectedApps={selectedApps}
-                        deselectApps={() => setSelectedApps([])}
-                        deleteApps={(apps) => deleteSelectedApps(apps)}
-                        />
+    const BulkActionEl = (
+        <BulkAction
+            selectedApps={selectedApps}
+            deselectApps={() => setSelectedApps([])}
+            deleteApps={(apps) => deleteSelectedApps(apps)}
+        />
+    );
 
     const toggleSelectApp = (id) => {
-        const apps = selectedApps.includes(id) ? selectedApps.filter((app) => app !== id) : [...selectedApps, id]
+        const apps = selectedApps.includes(id)
+            ? selectedApps.filter((app) => app !== id)
+            : [...selectedApps, id];
 
         // Toggle on Bulk Element Comp
         if (apps.length > 0) {
             updateAlert({
                 type: 'bulk',
-                msg: BulkActionEl
-            })
-        } else  {
+                msg: BulkActionEl,
+            });
+        } else {
             updateAlert();
         }
 
-        setSelectedApps(apps)
-    }
+        setSelectedApps(apps);
+    };
 
     const handleDateFilter = (days) => {
         const compareDate = new Date(Date.now() - days * 86400000);
-        const filteredApps = [...applications.filter(app => new Date(app.date_applied) > compareDate)];
+        const filteredApps = [
+            ...applications.filter(
+                (app) => new Date(app.date_applied) > compareDate,
+            ),
+        ];
         filteredApps.sort(sortByResponse);
         setFilterApps(filteredApps);
-    }
-
+    };
 
     if (applications.length === 0) {
-        return <NoApps showForm={() => setShowForm(true)}/>
+        return <NoApps showForm={() => setShowForm(true)} />;
     }
 
     return (
@@ -118,7 +137,7 @@ function ApplicationTables() {
             {filterApps.length === 0 && (
                 <>
                     {acceptedApps.length > 0 && (
-                        <Table title={"Accepted!"}>
+                        <Table title={'Accepted!'}>
                             {acceptedApps.map((app) => (
                                 <TableRow
                                     key={app.id}
@@ -130,7 +149,7 @@ function ApplicationTables() {
                         </Table>
                     )}
                     {activeApps.length > 0 && (
-                        <Table title={"Active"}>
+                        <Table title={'Active'}>
                             {activeApps.map((app) => (
                                 <TableRow
                                     key={app.id}
@@ -142,7 +161,7 @@ function ApplicationTables() {
                         </Table>
                     )}
                     {closedApps.length > 0 && (
-                        <Table title={"Closed"} closed={true}>
+                        <Table title={'Closed'} closed={true}>
                             {closedApps.map((app) => (
                                 <TableRow
                                     key={app.id}
@@ -160,6 +179,5 @@ function ApplicationTables() {
         </EditProvider>
     );
 }
-
 
 export default ApplicationTables;

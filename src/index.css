@@ -2,16 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-
-.edit-cell .amplify-select, .edit-cell .amplify-input {
-  border-radius: 0;
-  border: 0;
+.edit-cell .amplify-select,
+.edit-cell .amplify-input {
+    border-radius: 0;
+    border: 0;
 }
 .edit-cell .amplify-selectfield {
-  flex: 1;
+    flex: 1;
 }
 .edit-cell .amplify-label {
-  display: none;
+    display: none;
 }
 
 /* :root {

@@ -1,16 +1,20 @@
-import { useState } from "react";
-import { TableCell } from "./TableCells";
+import { useState } from 'react';
+import { TableCell } from './TableCells';
 
-import { convertDate } from "../../lib/utils";
-import { updateApp } from "../../lib/utils";
+import { convertDate } from '../../lib/utils';
+import { updateApp } from '../../lib/utils';
 
-const dataKeys = ["role", "company", "response", "date_applied"];
+const dataKeys = ['role', 'company', 'response', 'date_applied'];
 
 export const TableRow = ({ app, toggleSelect, selected }) => {
     const [hover, setHover] = useState(false);
     const initialVal = {};
     // Prevent undesired keys
-    dataKeys.map( key => initialVal[key] = (key === "date_applied") ? convertDate(app[key]) : app[key])
+    dataKeys.map(
+        (key) =>
+            (initialVal[key] =
+                key === 'date_applied' ? convertDate(app[key]) : app[key]),
+    );
 
     const handleSubmit = (val) => {
         const values = {
@@ -29,21 +33,20 @@ export const TableRow = ({ app, toggleSelect, selected }) => {
 
     return (
         <div
-        className='flex'
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
+            className='flex'
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
         >
-            <div className="w-8 flex align-middle justify-center">
-
-            {(hover || selected) &&
-            <input
-            onClick={() => toggleSelect(app.id)}
-            type='checkbox'
-            name='selectRow'
-            />
-        }
-        </div>
-            <div className=' flex-1 grid grid-cols-5 bg-white rounded-full overflow-hidden my-1'>
+            <div className='flex w-8 justify-center align-middle'>
+                {(hover || selected) && (
+                    <input
+                        onClick={() => toggleSelect(app.id)}
+                        type='checkbox'
+                        name='selectRow'
+                    />
+                )}
+            </div>
+            <div className=' my-1 grid flex-1 grid-cols-5 overflow-hidden rounded-full bg-white'>
                 {Object.entries(initialVal).map(([key, value]) => {
                     return (
                         <TableCell
