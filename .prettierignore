@@ -10,8 +10,8 @@
 
 # aws amplify
 amplify
-/ui-components
-/graphql
+src/ui-components
+src/graphql
 
 # production
 /build

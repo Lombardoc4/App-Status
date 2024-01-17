@@ -2,7 +2,7 @@ const config = {
   arrowParens: 'always',
   singleQuote: true,
   jsxSingleQuote: true,
-  tabWidth: 2,
+  tabWidth: 4,
   semi: true,
   plugins: ['prettier-plugin-tailwindcss'],
   tailwindConfig: './tailwind.config.js',
