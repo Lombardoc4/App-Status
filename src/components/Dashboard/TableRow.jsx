@@ -43,7 +43,7 @@ export const TableRow = ({ app, toggleSelect, selected }) => {
             />
         }
         </div>
-            <div className=' flex-1 grid grid-cols-5 bg-white'>
+            <div className=' flex-1 grid grid-cols-5 bg-white rounded-full overflow-hidden my-1'>
                 {Object.entries(initialVal).map(([key, value]) => {
                     return (
                         <TableCell

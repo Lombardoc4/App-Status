@@ -26,7 +26,7 @@ export const Table = ({ title, children, closed = false }) => {
 };
 
 const TableHeader = () => (
-    <div className='ml-8 grid grid-cols-5 bg-blue-600 text-white'>
+    <div className='ml-8 grid grid-cols-5 bg-blue-600 text-white  rounded-full overflow-hidden'>
         <div className='col-span-2 text-left px-3 my-2 border-r border-white'>Role</div>
         <div className='text-left  px-3 my-2  border-r border-white'>Company</div>
         <div className='text-left  px-3 my-2  border-r border-white'>Response</div>
