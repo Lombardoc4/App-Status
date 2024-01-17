@@ -8,10 +8,10 @@
 # testing
 /coverage
 
-# next.js
-.next
-/.next/
-/out/
+# aws amplify
+amplify
+/ui-components
+/graphql
 
 # production
 /build
