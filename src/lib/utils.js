@@ -1,11 +1,12 @@
-import { listApplications } from '../graphql/queries';
+import { generateClient } from 'aws-amplify/api';
+
 import { deleteApplication, updateApplication } from '../graphql/mutations';
+import { listApplications } from '../graphql/queries';
 import {
     onCreateApplication,
     onDeleteApplication,
     onUpdateApplication,
 } from '../graphql/subscriptions';
-import { generateClient } from 'aws-amplify/api';
 
 const client = generateClient();
 
@@ -72,7 +73,7 @@ export const subCreation = (cb) => {
             next: ({ data }) => {
                 cb(data.onCreateApplication);
             },
-            error: (error) => console.warn(error),
+            error: (error) => error,
         });
 
     return subCreateApp;
@@ -85,7 +86,7 @@ export const subUpdate = (cb) => {
             next: ({ data }) => {
                 cb(data.onUpdateApplication);
             },
-            error: (error) => console.warn(error),
+            error: (error) => error,
         });
 
     return subUpdateApp;
@@ -98,7 +99,7 @@ export const subDelete = (cb) => {
             next: ({ data }) => {
                 cb(data.onDeleteApplication);
             },
-            error: (error) => console.warn(error),
+            error: (error) => error,
         });
 
     return subDeleteApp;

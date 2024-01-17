@@ -8,7 +8,12 @@
         "build": "vite build",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
-        "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+        "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
+        "lint:fix": "eslint src --fix && pnpm format",
+        "lint:strict": "eslint --max-warnings=0 src",
+        "prepare": "husky install",
+        "release": "release-it",
+        "release-dry": "release-it --dry-run",
         "preview": "vite preview"
     },
     "dependencies": {
@@ -23,6 +28,9 @@
         "recharts": "latest"
     },
     "devDependencies": {
+        "@commitlint/cli": "latest",
+        "@commitlint/config-conventional": "latest",
+        "@release-it/conventional-changelog": "latest",
         "@types/react": "latest",
         "@types/react-dom": "latest",
         "@vitejs/plugin-react": "latest",
@@ -31,11 +39,28 @@
         "eslint-plugin-react": "latest",
         "eslint-plugin-react-hooks": "latest",
         "eslint-plugin-react-refresh": "latest",
+        "eslint-config-prettier": "latest",
+        "eslint-plugin-simple-import-sort": "latest",
+        "eslint-plugin-unused-imports": "latest",
+        "husky": "latest",
+        "lint-staged": "latest",
         "postcss": "latest",
         "prettier": "latest",
         "prettier-plugin-tailwindcss": "latest",
         "tailwindcss": "latest",
         "vite": "latest",
         "vitest": "latest"
+    },
+    "lint-staged": {
+        "**/*.{js,jsx,ts,tsx}": [
+            "eslint --max-warnings=0",
+            "prettier -w"
+        ],
+        "**/*.{json,css,scss,md,webmanifest}": [
+            "prettier -w"
+        ]
+    },
+    "engines": {
+        "node": "21.x"
     }
 }
