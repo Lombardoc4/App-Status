@@ -3,26 +3,15 @@ import {
     ChartPieIcon,
     ClockIcon,
     DocumentTextIcon,
-    HomeIcon,
     QuestionMarkCircleIcon,
     RocketLaunchIcon,
 } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
-import { NavLink, Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 export const DashboardNav = () => {
     return (
         <aside className='flex w-1/4 max-w-[240px] flex-col bg-blue-600 p-2 pb-4 text-white shadow-sm'>
-            <div className='flex items-center justify-center gap-2 py-4 text-2xl'>
-                <DocumentTextIcon className='h-12 w-12' />
-                <h2>
-                    APP
-                    <br />
-                    TRACKER
-                </h2>
-            </div>
-            <div className='my-2 h-px rounded-full bg-white'></div>
-
             <div className='my-4 flex w-full flex-col gap-4'>
                 <NavLink
                     to='/dashboard'
@@ -98,13 +87,6 @@ export const DashboardNav = () => {
                 >
                     <QuestionMarkCircleIcon className='h-6 w-6' />
                     Help
-                </Link>
-                <Link
-                    className='flex gap-2 rounded-xl border bg-blue-600 px-3 py-2 text-white shadow-inner '
-                    to='/'
-                >
-                    <HomeIcon className='h-6 w-6' />
-                    AppTracker.com
                 </Link>
             </div>
         </aside>

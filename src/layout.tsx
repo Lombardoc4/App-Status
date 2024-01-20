@@ -1,11 +1,10 @@
-import PropTypes from 'prop-types';
 import { Outlet } from 'react-router-dom';
 
 import { AlertModal } from './components/AlertModal';
 import { DashboardNav } from './components/DashboardNav';
 import Footer from './components/Footer';
 import Nav from './components/Nav';
-import { AlertProvider } from './lib/useAlertContext';
+import { AlertProvider } from './lib/alertContext';
 
 function Layout() {
     return (
@@ -26,7 +25,7 @@ function Layout() {
 
 export default Layout;
 
-export function DashLayout({ children }) {
+export function DashLayout({ children }: { children: React.ReactNode }) {
     return (
         <div className=' w-full overflow-scroll bg-gradient-to-br from-blue-100 to-slate-100'>
             <main>
@@ -36,7 +35,3 @@ export function DashLayout({ children }) {
         </div>
     );
 }
-
-DashLayout.propTypes = {
-    children: PropTypes.node,
-};

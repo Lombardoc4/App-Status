@@ -1,18 +1,17 @@
 import { useEffect, useState } from 'react';
-import {
-    getApplications,
-    subCreation,
-    subDelete,
-    subUpdate,
-    deleteApp,
-    updateApp,
-} from './utils';
 
-const sortApps = (apps) =>
-    apps.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+import { getApplications, subCreation, subDelete, subUpdate } from './utils';
+import { Application } from '../API';
+
+const sortApps = (apps: Application[]) =>
+    apps.sort((a, b) => {
+        return (
+            new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
+        );
+    });
 
 export const useApplicationsData = () => {
-    const [applications, setApplications] = useState([]);
+    const [applications, setApplications] = useState<Application[]>([]);
 
     useEffect(() => {
         const subCreateApp = subCreation((newApp) => {
@@ -38,7 +37,7 @@ export const useApplicationsData = () => {
         getApplications().then((data) => {
             if (!Array.isArray(data)) {
                 // TODO : ERROR HANDLING
-                console.log('res0', data);
+                // console.log('res0', data);
                 return;
             }
 

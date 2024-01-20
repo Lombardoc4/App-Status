@@ -150,14 +150,53 @@ export const getResume = /* GraphQL */ `query GetResume($id: ID!) {
     bio
     skills
     employment {
+      items {
+        id
+        company
+        role
+        start_date
+        end_date
+        description
+        createdAt
+        updatedAt
+        resumeEmploymentId
+        resumeProjectsId
+        owner
+        __typename
+      }
       nextToken
       __typename
     }
     projects {
+      items {
+        id
+        company
+        role
+        start_date
+        end_date
+        description
+        createdAt
+        updatedAt
+        resumeEmploymentId
+        resumeProjectsId
+        owner
+        __typename
+      }
       nextToken
       __typename
     }
     education {
+      items {
+        id
+        school
+        tier
+        completion
+        createdAt
+        updatedAt
+        resumeEducationId
+        owner
+        __typename
+      }
       nextToken
       __typename
     }
@@ -182,6 +221,18 @@ export const listResumes = /* GraphQL */ `query ListResumes(
       links
       bio
       skills
+      employment {
+        nextToken
+        __typename
+      }
+      projects {
+        nextToken
+        __typename
+      }
+      education {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       owner

@@ -1,5 +1,6 @@
 import { generateClient } from 'aws-amplify/api';
 
+import { Application, UpdateApplicationInput } from '../API';
 import { deleteApplication, updateApplication } from '../graphql/mutations';
 import { listApplications } from '../graphql/queries';
 import {
@@ -17,14 +18,14 @@ const responseOptions = {
     ACCEPTED: 'Accepted!',
 };
 
-export const convertDate = (date) => {
+export const convertDate = (date: string) => {
     return new Date(date.replace(/-/g, '/')).toDateString();
 };
-export const cleanDate = (date) => {
+export const cleanDate = (date: string) => {
     return new Date(date).toISOString().split('T')[0];
 };
 
-export const convertResponse = (response) => {
+export const convertResponse = (response: string) => {
     let newVal = response;
 
     Object.entries(responseOptions).map(([key, val]) => {
@@ -44,7 +45,7 @@ export const getApplications = async () => {
     return data.listApplications.items;
 };
 
-export const updateApp = async (values) => {
+export const updateApp = async (values: UpdateApplicationInput) => {
     // Todo: try catch to return error
     const { data } = await client.graphql({
         query: updateApplication,
@@ -54,7 +55,7 @@ export const updateApp = async (values) => {
     return data.updateApplication;
 };
 
-export const deleteApp = async (id) => {
+export const deleteApp = async (id: string) => {
     const { data } = await client.graphql({
         query: deleteApplication,
         variables: {
@@ -66,7 +67,7 @@ export const deleteApp = async (id) => {
     return data.deleteApplication;
 };
 
-export const subCreation = (cb) => {
+export const subCreation = (cb: (app: Application) => void) => {
     const subCreateApp = client
         .graphql({ query: onCreateApplication })
         .subscribe({
@@ -79,7 +80,7 @@ export const subCreation = (cb) => {
     return subCreateApp;
 };
 
-export const subUpdate = (cb) => {
+export const subUpdate = (cb: (app: Application) => void) => {
     const subUpdateApp = client
         .graphql({ query: onUpdateApplication })
         .subscribe({
@@ -92,7 +93,7 @@ export const subUpdate = (cb) => {
     return subUpdateApp;
 };
 
-export const subDelete = (cb) => {
+export const subDelete = (cb: (app: Application) => void) => {
     const subDeleteApp = client
         .graphql({ query: onDeleteApplication })
         .subscribe({

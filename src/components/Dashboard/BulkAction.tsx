@@ -1,10 +1,20 @@
 import { TrashIcon } from '@heroicons/react/24/outline';
 
-export const BulkAction = ({ selectedApps, deselectApps, deleteApps }) => {
+interface BulkActionProps {
+    selectedApps: number;
+    deselectApps: () => void;
+    deleteApps: () => void;
+}
+
+export const BulkAction = ({
+    selectedApps,
+    deselectApps,
+    deleteApps,
+}: BulkActionProps) => {
     return (
         <>
             <p className='my-auto italic text-slate-400'>
-                {selectedApps.length} Selected
+                {selectedApps} Selected
             </p>
             <button
                 onClick={deselectApps}

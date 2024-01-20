@@ -7,10 +7,10 @@ import { RouterProvider } from 'react-router-dom';
 import './index.css';
 
 import config from './amplifyconfiguration.json';
-import router from './router.jsx';
+import router from './router.js';
 Amplify.configure(config);
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <Authenticator.Provider>
             <RouterProvider router={router} />

@@ -8,7 +8,7 @@
         "build": "vite build",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
-        "lint": "eslint . --report-unused-disable-directives --max-warnings=0",
+        "lint": "eslint 'src/**' --report-unused-disable-directives --max-warnings=0",
         "lint:fix": "eslint --fix 'src/**' && pnpm format",
         "lint:strict": "eslint --max-warnings=0 'src/**'",
         "prepare": "husky install",
@@ -23,7 +23,6 @@
         "classnames": "latest",
         "react": "latest",
         "react-dom": "latest",
-        "react-modal": "latest",
         "react-router-dom": "latest",
         "recharts": "latest"
     },
@@ -33,6 +32,8 @@
         "@release-it/conventional-changelog": "latest",
         "@types/react": "latest",
         "@types/react-dom": "latest",
+        "@typescript-eslint/eslint-plugin": "latest",
+        "@typescript-eslint/parser": "latest",
         "@vitejs/plugin-react": "latest",
         "autoprefixer": "latest",
         "daisyui": "latest",
@@ -49,17 +50,9 @@
         "prettier": "latest",
         "prettier-plugin-tailwindcss": "latest",
         "tailwindcss": "latest",
+        "typescript": "latest",
         "vite": "latest",
         "vitest": "latest"
-    },
-    "lint-staged": {
-        "**/*.{js,jsx,ts,tsx}": [
-            "eslint --fix --max-warnings=0",
-            "prettier -w"
-        ],
-        "**/*.{json,css,scss,md,webmanifest}": [
-            "prettier -w"
-        ]
     },
     "engines": {
         "node": "21.x"

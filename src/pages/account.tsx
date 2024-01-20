@@ -1,50 +1,49 @@
 import { useAuthenticator } from '@aws-amplify/ui-react';
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { DashLayout } from './layout';
 // import { Auth } from 'aws-amplify';
 // import { getCurrentUser } from 'aws-amplify/auth';
-import { updateUserAttribute, fetchUserAttributes } from 'aws-amplify/auth';
+import {
+    fetchUserAttributes,
+    FetchUserAttributesOutput,
+    updateUserAttribute,
+} from 'aws-amplify/auth';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-async function handleUpdateUserAttribute(attributeKey, value) {
+import { DashLayout } from '../layout';
+
+async function handleUpdateUserAttribute(attributeKey: string, value: string) {
     try {
-        const output = await updateUserAttribute({
+        // const output =
+        await updateUserAttribute({
             userAttribute: {
                 attributeKey,
                 value,
             },
         });
-        console.log(`attribute was successfully updated.`, output);
+        // console.log(`attribute was successfully updated.`, output);
         return;
     } catch (error) {
-        console.log(error);
-    }
-}
-
-async function handleFetchUserAttributes() {
-    try {
-        const userAttributes = await fetchUserAttributes();
-        console.log(userAttributes);
-        return userAttributes;
-    } catch (error) {
-        console.log(error);
+        return error;
     }
 }
 
 function Account() {
     const { user, authStatus } = useAuthenticator((context) => [context.user]);
 
-    console.log('authStatus', authStatus, user);
+    // console.log('authStatus', authStatus, user);
     const navigate = useNavigate();
 
     const [nameEdit, setNameEdit] = useState(false);
-    const [attributes, setAttributes] = useState({});
-    const nameInput = useRef(null);
+    const [attributes, setAttributes] = useState<FetchUserAttributesOutput>({
+        name: '',
+        email: '',
+    });
+    const nameInput = useRef<HTMLInputElement>(null);
 
     const handleEdit = () => {
-        const newName = nameInput.current.value;
+        const newName = (nameInput.current as HTMLInputElement).value;
         handleUpdateUserAttribute('name', newName).then(() => {
-            handleFetchUserAttributes().then((attrs) => setAttributes(attrs));
+            fetchUserAttributes().then((attrs) => setAttributes(attrs));
         });
         setNameEdit(false);
     };
@@ -54,10 +53,10 @@ function Account() {
             navigate('/login');
         }
 
-        handleFetchUserAttributes().then((attrs) => setAttributes(attrs));
-    }, [authStatus]);
+        fetchUserAttributes().then((attrs) => setAttributes(attrs));
+    }, [authStatus, navigate]);
 
-    console.log(authStatus !== 'unauthenticated' && !user);
+    // console.log(authStatus !== 'unauthenticated' && !user);
 
     if (authStatus === 'unauthenticated' && !user) {
         return (

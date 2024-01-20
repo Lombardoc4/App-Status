@@ -11,6 +11,7 @@ module.exports = {
         'plugin:react/recommended',
         'plugin:react/jsx-runtime',
         'plugin:react-hooks/recommended',
+        'plugin:@typescript-eslint/recommended',
         'prettier',
     ],
     ignorePatterns: [
@@ -21,10 +22,12 @@ module.exports = {
         'reading-time',
         // AWS
         'amplify-codegen-temp/models/models',
-        'ui-components',
+        'src/ui-components',
         'graphql',
         'aws-exports.js',
+        'src/API.ts',
     ],
+    parser: '@typescript-eslint/parser',
     parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
     settings: { react: { version: '18.^' } },
 

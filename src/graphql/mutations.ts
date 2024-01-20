@@ -210,14 +210,53 @@ export const createResume = /* GraphQL */ `mutation CreateResume(
     bio
     skills
     employment {
+      items {
+        id
+        company
+        role
+        start_date
+        end_date
+        description
+        createdAt
+        updatedAt
+        resumeEmploymentId
+        resumeProjectsId
+        owner
+        __typename
+      }
       nextToken
       __typename
     }
     projects {
+      items {
+        id
+        company
+        role
+        start_date
+        end_date
+        description
+        createdAt
+        updatedAt
+        resumeEmploymentId
+        resumeProjectsId
+        owner
+        __typename
+      }
       nextToken
       __typename
     }
     education {
+      items {
+        id
+        school
+        tier
+        completion
+        createdAt
+        updatedAt
+        resumeEducationId
+        owner
+        __typename
+      }
       nextToken
       __typename
     }
@@ -244,14 +283,53 @@ export const updateResume = /* GraphQL */ `mutation UpdateResume(
     bio
     skills
     employment {
+      items {
+        id
+        company
+        role
+        start_date
+        end_date
+        description
+        createdAt
+        updatedAt
+        resumeEmploymentId
+        resumeProjectsId
+        owner
+        __typename
+      }
       nextToken
       __typename
     }
     projects {
+      items {
+        id
+        company
+        role
+        start_date
+        end_date
+        description
+        createdAt
+        updatedAt
+        resumeEmploymentId
+        resumeProjectsId
+        owner
+        __typename
+      }
       nextToken
       __typename
     }
     education {
+      items {
+        id
+        school
+        tier
+        completion
+        createdAt
+        updatedAt
+        resumeEducationId
+        owner
+        __typename
+      }
       nextToken
       __typename
     }
@@ -278,14 +356,53 @@ export const deleteResume = /* GraphQL */ `mutation DeleteResume(
     bio
     skills
     employment {
+      items {
+        id
+        company
+        role
+        start_date
+        end_date
+        description
+        createdAt
+        updatedAt
+        resumeEmploymentId
+        resumeProjectsId
+        owner
+        __typename
+      }
       nextToken
       __typename
     }
     projects {
+      items {
+        id
+        company
+        role
+        start_date
+        end_date
+        description
+        createdAt
+        updatedAt
+        resumeEmploymentId
+        resumeProjectsId
+        owner
+        __typename
+      }
       nextToken
       __typename
     }
     education {
+      items {
+        id
+        school
+        tier
+        completion
+        createdAt
+        updatedAt
+        resumeEducationId
+        owner
+        __typename
+      }
       nextToken
       __typename
     }

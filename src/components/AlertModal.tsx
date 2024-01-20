@@ -1,9 +1,11 @@
 import { CheckIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
-import { useAlertContext } from '../lib/useAlertContext';
+
+import { useAlertContext } from '../lib/alertContext';
 
 export const AlertModal = () => {
-    const { alert, updateAlert } = useAlertContext();
+    const alertContext = useAlertContext();
+    const { alert, updateAlert } = alertContext;
 
     const modalClasses = classNames(
         'px-6 py-4 shadow-md rounded-md',

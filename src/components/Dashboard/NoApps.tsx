@@ -1,4 +1,4 @@
-export const NoApps = ({ showForm }) => {
+export const NoApps = ({ showForm }: { showForm: () => void }) => (
     <div className='flex h-96 bg-blue-200 text-center align-middle'>
         <p className='mb-2 text-xl text-slate-500'>No Applications</p>
         <button
@@ -7,5 +7,5 @@ export const NoApps = ({ showForm }) => {
         >
             Add Application
         </button>
-    </div>;
-};
+    </div>
+);

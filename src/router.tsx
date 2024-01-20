@@ -1,12 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import App from './App';
-import Login from './components/Login';
-import Layout from './layout.jsx';
-import Account from './pages/account';
-import Dashboard from './pages/dashboard.jsx';
-import { ResumeGenerator } from './pages/resume-generator.jsx';
-import { StatsPage } from './pages/stats.jsx';
+import App from './App.js';
+import Login from './components/Login.js';
+import Layout from './layout.js';
+import Account from './pages/account.js';
+import Dashboard from './pages/dashboard.js';
+import { ResumeGenerator } from './pages/resume-generator.js';
+import { StatsPage } from './pages/stats.js';
 
 const router = createBrowserRouter([
     {

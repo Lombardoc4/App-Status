@@ -1,15 +1,17 @@
-import { useEffect, useMemo, useState, useRef } from 'react';
-import { EditProvider } from '../../lib/useEditContext';
-import { NoApps } from './NoApps';
-import { deleteApp } from '../../lib/utils';
-import { ApplicationsHeader } from './Header';
-import { TableRow } from './TableRow';
-import { Table } from './Table';
-import { BulkAction } from './BulkAction';
-import { useApplicationsData } from '../../lib/useApplicationsData';
-import { useAlertContext } from '../../lib/useAlertContext';
+import { useMemo, useState } from 'react';
 
-const sortByResponse = (a, b) => {
+import { BulkAction } from './BulkAction';
+import { ApplicationsHeader } from './Header';
+// import { NoApps } from './NoApps';
+import { Table } from './Table';
+import { TableRow } from './TableRow';
+import { Application } from '../../API';
+import { useAlertContext } from '../../lib/alertContext';
+import { useApplicationsData } from '../../lib/useApplicationsData';
+import { EditProvider } from '../../lib/useEditContext';
+import { deleteApp } from '../../lib/utils';
+
+const sortByResponse = (a: Application, b: Application) => {
     let res = 1;
     if (a.response === b.response) res = 0;
     else if (a.response === 'ACCEPTED') res = -1;
@@ -27,8 +29,8 @@ const sortByResponse = (a, b) => {
 function ApplicationTables() {
     const applications = useApplicationsData();
 
-    const [filterApps, setFilterApps] = useState([]);
-    const [selectedApps, setSelectedApps] = useState([]);
+    const [filterApps, setFilterApps] = useState<Application[]>([]);
+    const [selectedApps, setSelectedApps] = useState<string[]>([]);
 
     const { updateAlert } = useAlertContext();
 
@@ -53,7 +55,7 @@ function ApplicationTables() {
         const responses = selectedApps.map((app) => deleteApp(app));
 
         Promise.all(responses)
-            .then((res) => {
+            .then(() => {
                 updateAlert({
                     type: 'success',
                     msg: 'Items deleted successfully',
@@ -61,24 +63,24 @@ function ApplicationTables() {
 
                 setSelectedApps([]);
             })
-            .catch((err) => {
+            .catch(() => {
                 updateAlert({
                     type: 'error',
                     msg: 'Items could not be deleted',
                 });
-                console.log('error', err);
+                // console.log('error', err);
             });
     };
 
     const BulkActionEl = (
         <BulkAction
-            selectedApps={selectedApps}
+            selectedApps={selectedApps.length}
             deselectApps={() => setSelectedApps([])}
-            deleteApps={(apps) => deleteSelectedApps(apps)}
+            deleteApps={() => deleteSelectedApps()}
         />
     );
 
-    const toggleSelectApp = (id) => {
+    const toggleSelectApp = (id: string) => {
         const apps = selectedApps.includes(id)
             ? selectedApps.filter((app) => app !== id)
             : [...selectedApps, id];
@@ -96,7 +98,7 @@ function ApplicationTables() {
         setSelectedApps(apps);
     };
 
-    const handleDateFilter = (days) => {
+    const handleDateFilter = (days: number) => {
         const compareDate = new Date(Date.now() - days * 86400000);
         const filteredApps = [
             ...applications.filter(
@@ -107,16 +109,17 @@ function ApplicationTables() {
         setFilterApps(filteredApps);
     };
 
-    if (applications.length === 0) {
-        return <NoApps showForm={() => setShowForm(true)} />;
-    }
+    // ! Todo : Bring back to life
+    // if (applications.length === 0) {
+    //     return <NoApps showForm={() => setShowForm(true)} />;
+    // }
 
     return (
         <EditProvider>
             <ApplicationsHeader
                 applications={applications}
-                searchInput={(apps) => setFilterApps(apps)}
-                dateFilter={(days) => handleDateFilter(days)}
+                searchInput={(apps: Application[]) => setFilterApps(apps)}
+                dateFilter={(days: number) => handleDateFilter(days)}
             />
 
             {/* <div>Dropdown with bulk action?</div> */}
@@ -137,8 +140,8 @@ function ApplicationTables() {
             {filterApps.length === 0 && (
                 <>
                     {acceptedApps.length > 0 && (
-                        <Table title={'Accepted!'}>
-                            {acceptedApps.map((app) => (
+                        <Table title='Accepted!'>
+                            {acceptedApps.map((app: Application) => (
                                 <TableRow
                                     key={app.id}
                                     app={app}
@@ -149,7 +152,7 @@ function ApplicationTables() {
                         </Table>
                     )}
                     {activeApps.length > 0 && (
-                        <Table title={'Active'}>
+                        <Table title='Active'>
                             {activeApps.map((app) => (
                                 <TableRow
                                     key={app.id}
@@ -161,7 +164,7 @@ function ApplicationTables() {
                         </Table>
                     )}
                     {closedApps.length > 0 && (
-                        <Table title={'Closed'} closed={true}>
+                        <Table title='Closed' closed={true}>
                             {closedApps.map((app) => (
                                 <TableRow
                                     key={app.id}

@@ -5,7 +5,7 @@ const config = {
     tabWidth: 4,
     semi: true,
     plugins: ['prettier-plugin-tailwindcss'],
-    tailwindConfig: './tailwind.config.js',
+    tailwindConfig: './tailwind.config.ts',
 };
 
 export default config;

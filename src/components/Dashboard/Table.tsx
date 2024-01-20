@@ -2,17 +2,23 @@ import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
 import { useState } from 'react';
 
-export const Table = ({ title, children, closed = false }) => {
-    const [hidden, setHidden] = useState(closed);
+interface TableProps {
+    title: string;
+    children: React.ReactNode[];
+    closed?: boolean;
+}
 
+export const Table = ({ title, children, closed = false }: TableProps) => {
+    const [hidden, setHidden] = useState(closed);
     if (!children) return <></>;
 
     return (
         <div className='mb-8'>
+            {/* Heading */}
             <div className='mb-4 flex items-end'>
                 <h2
-                    className='rounded-md px-2 py-1 text-xl font-bold hover:cursor-pointer hover:bg-slate-300'
                     onClick={() => setHidden(!hidden)}
+                    className='rounded-md px-2 py-1 text-xl font-bold hover:cursor-pointer hover:bg-slate-300'
                 >
                     <ChevronRightIcon
                         className={classNames(

@@ -12,4 +12,5 @@ export { default as ExperienceCreateForm } from "./ExperienceCreateForm";
 export { default as ExperienceUpdateForm } from "./ExperienceUpdateForm";
 export { default as ResumeCreateForm } from "./ResumeCreateForm";
 export { default as ResumeUpdateForm } from "./ResumeUpdateForm";
+export { default as UpdateCompany } from "./UpdateCompany";
 export { default as studioTheme } from "./studioTheme";

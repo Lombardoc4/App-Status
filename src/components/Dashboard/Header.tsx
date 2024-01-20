@@ -1,40 +1,55 @@
+import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { useMemo, useState } from 'react';
-import ApplicationCreateForm from './ApplicationCreateForm';
-import { PlusCircleIcon, TrashIcon } from '@heroicons/react/24/outline';
+
+import { Application } from '../../API';
+import ApplicationCreateForm from '../../ui-components/ApplicationCreateForm';
 
 const daysInMonth = new Date(
     new Date().getFullYear(),
     new Date().getMonth() + 1,
     0,
 ).getDate();
+
 const TimePeriods = {
     '7 Days': 7,
     '2 Weeks': 14,
     '1 Month': daysInMonth,
 };
 
+interface AppHeader {
+    applications: Application[];
+    // deleteApps: () => void,
+    // deselectApps: () => void,
+    // selectedApps: Application[],
+    searchInput: (apps: Application[]) => void;
+    dateFilter: (days: number) => void;
+}
+
 export const ApplicationsHeader = ({
     applications,
-    deleteApps,
-    deselectApps,
-    selectedApps,
+    // deleteApps,
+    // deselectApps,
+    // selectedApps,
     searchInput,
     dateFilter,
-}) => {
+}: AppHeader) => {
     const [showForm, setShowForm] = useState(false);
     const companies = useMemo(
         () => [...new Set(applications.map((app) => app.company))],
         [applications],
     );
 
-    const handleSearch = (e) => {
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         searchInput(
-            applications.filter((app) => app.company === e.target.value),
+            applications.filter(
+                (app) => app.company === (e.target as HTMLInputElement).value,
+            ),
         );
     };
 
-    const handleFilter = (e) => {
-        dateFilter(TimePeriods[e.target.value]);
+    const handleFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const { value } = e.target as HTMLSelectElement;
+        dateFilter(TimePeriods[value as keyof typeof TimePeriods]);
     };
 
     const closeForm = () => {
@@ -67,7 +82,6 @@ export const ApplicationsHeader = ({
                     ))}
                 </datalist>
                 <select
-                    placeholder='Date Applied'
                     className='rounded-md border px-2'
                     id='time-filter'
                     name='time-filter'
@@ -90,8 +104,8 @@ export const ApplicationsHeader = ({
                 <ApplicationCreateForm
                     onSuccess={closeForm}
                     onCancel={closeForm}
-                    onError={(error) => {
-                        console.log('error', error);
+                    onError={() => {
+                        // console.log('error', error);
                     }}
                 />
             )}

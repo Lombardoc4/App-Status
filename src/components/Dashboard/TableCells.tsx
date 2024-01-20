@@ -1,13 +1,26 @@
-import { useState, useCallback, useMemo } from 'react';
 import { CheckCircleIcon, PencilIcon } from '@heroicons/react/24/outline';
-
-import { validateField } from '../../ui-components/utils';
-import { useEditContext, useSetEditContext } from '../../lib/useEditContext';
-import { DateInput, ResponseInput, TextInput } from './ApplicationInputs';
-import { cleanDate, convertResponse } from '../../lib/utils';
 import classNames from 'classnames';
+import { useCallback, useMemo, useState } from 'react';
 
-export const TableCell = function TableCell({ val, id, type, handleSubmit }) {
+import { DateInput, ResponseInput, TextInput } from './ApplicationInputs';
+import { useEditContext, useSetEditContext } from '../../lib/useEditContext';
+import { cleanDate, convertResponse } from '../../lib/utils';
+// import { validateField } from '../../ui-components/utils.js';
+// import { ValidationResponse } from '../../ui-components/ApplicationCreateForm';
+
+interface TableCellProps {
+    val: string;
+    id: string;
+    type: string;
+    handleSubmit: (val: string) => void;
+}
+
+export const TableCell = function TableCell({
+    val,
+    id,
+    type,
+    handleSubmit,
+}: TableCellProps) {
     const editId = useEditContext();
     const setEdit = useSetEditContext();
 
@@ -16,16 +29,19 @@ export const TableCell = function TableCell({ val, id, type, handleSubmit }) {
 
     const toggleOff = useCallback(() => {
         setEdit('');
-    }, []);
+    }, [setEdit]);
 
-    const submit = useCallback((val) => {
-        handleSubmit(val);
-        toggleOff();
-    }, []);
+    const submit = useCallback(
+        (val: string) => {
+            handleSubmit(val);
+            toggleOff();
+        },
+        [handleSubmit, toggleOff],
+    );
 
     const toggleEdit = useCallback(() => {
         setEdit(cellId);
-    }, []);
+    }, [setEdit, cellId]);
 
     const cell = useMemo(
         () =>
@@ -39,13 +55,19 @@ export const TableCell = function TableCell({ val, id, type, handleSubmit }) {
             ) : (
                 <DefaultCell val={val} type={type} toggleEdit={toggleEdit} />
             ),
-        [editId === cellId],
+        [editId, cellId, val, type, submit, toggleEdit, toggleOff],
     );
 
     return cell;
 };
 
-export const DefaultCell = ({ val, type, toggleEdit }) => {
+interface DefaultCellProps {
+    val: string;
+    type: string;
+    toggleEdit: () => void;
+}
+
+export const DefaultCell = ({ val, type, toggleEdit }: DefaultCellProps) => {
     const [hover, setHover] = useState(false);
 
     return (
@@ -66,21 +88,37 @@ export const DefaultCell = ({ val, type, toggleEdit }) => {
     );
 };
 
-export const EditCell = ({ val, submit, type, cancel }) => {
+interface EditCellProps {
+    val: string;
+    type: string;
+    submit: (val: string) => void;
+    cancel: () => void;
+}
+
+export const EditCell = ({ val, submit, type, cancel }: EditCellProps) => {
     const [editVal, setEditVal] = useState(val);
-    const [error, setError] = useState('');
+    const [
+        error,
+        // setError
+    ] = useState({
+        hasError: false,
+    });
 
-    const validations = {
-        company: [{ type: 'Required' }],
-        role: [{ type: 'Required' }],
-        date_applied: [{ type: 'Required' }],
-        response: [],
-    };
+    // const validations = {
+    //     company: [{ type: 'Required' }],
+    //     role: [{ type: 'Required' }],
+    //     date_applied: [{ type: 'Required' }],
+    //     response: [],
+    // };
 
-    const runValidationTasks = async (fieldName, value) => {
-        let validationResponse = validateField(value, validations[fieldName]);
-        setError(validationResponse);
-        return validationResponse;
+    // const runValidationTasks = async (fieldName: string, value: string) => {
+    const runValidationTasks = async () => {
+        // const validationResponse = validateField(
+        //     value,
+        //     validations[fieldName as keyof typeof validations],
+        // ) as ValidationResponse;
+        // setError(validationResponse);
+        // return validationResponse;
     };
 
     const handleSubmit = () => {
@@ -93,7 +131,7 @@ export const EditCell = ({ val, submit, type, cancel }) => {
         // setEditVal(val);
     };
 
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: React.KeyboardEvent) => {
         e.code === 'Enter' && handleSubmit;
         e.code === 'Escape' && cancel();
     };

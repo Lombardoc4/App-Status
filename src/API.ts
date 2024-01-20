@@ -614,14 +614,53 @@ export type CreateResumeMutation = {
         skills: Array<string | null>;
         employment?: {
             __typename: 'ModelExperienceConnection';
+            items: Array<{
+                __typename: 'Experience';
+                id: string;
+                company: string;
+                role: string;
+                start_date: string;
+                end_date?: string | null;
+                description: Array<string | null>;
+                createdAt: string;
+                updatedAt: string;
+                resumeEmploymentId: string;
+                resumeProjectsId: string;
+                owner?: string | null;
+            } | null>;
             nextToken?: string | null;
         } | null;
         projects?: {
             __typename: 'ModelExperienceConnection';
+            items: Array<{
+                __typename: 'Experience';
+                id: string;
+                company: string;
+                role: string;
+                start_date: string;
+                end_date?: string | null;
+                description: Array<string | null>;
+                createdAt: string;
+                updatedAt: string;
+                resumeEmploymentId: string;
+                resumeProjectsId: string;
+                owner?: string | null;
+            } | null>;
             nextToken?: string | null;
         } | null;
         education?: {
             __typename: 'ModelEducationConnection';
+            items: Array<{
+                __typename: 'Education';
+                id: string;
+                school: string;
+                tier: EducationTiers;
+                completion: string;
+                createdAt: string;
+                updatedAt: string;
+                resumeEducationId?: string | null;
+                owner?: string | null;
+            } | null>;
             nextToken?: string | null;
         } | null;
         createdAt: string;
@@ -647,14 +686,53 @@ export type UpdateResumeMutation = {
         skills: Array<string | null>;
         employment?: {
             __typename: 'ModelExperienceConnection';
+            items: Array<{
+                __typename: 'Experience';
+                id: string;
+                company: string;
+                role: string;
+                start_date: string;
+                end_date?: string | null;
+                description: Array<string | null>;
+                createdAt: string;
+                updatedAt: string;
+                resumeEmploymentId: string;
+                resumeProjectsId: string;
+                owner?: string | null;
+            } | null>;
             nextToken?: string | null;
         } | null;
         projects?: {
             __typename: 'ModelExperienceConnection';
+            items: Array<{
+                __typename: 'Experience';
+                id: string;
+                company: string;
+                role: string;
+                start_date: string;
+                end_date?: string | null;
+                description: Array<string | null>;
+                createdAt: string;
+                updatedAt: string;
+                resumeEmploymentId: string;
+                resumeProjectsId: string;
+                owner?: string | null;
+            } | null>;
             nextToken?: string | null;
         } | null;
         education?: {
             __typename: 'ModelEducationConnection';
+            items: Array<{
+                __typename: 'Education';
+                id: string;
+                school: string;
+                tier: EducationTiers;
+                completion: string;
+                createdAt: string;
+                updatedAt: string;
+                resumeEducationId?: string | null;
+                owner?: string | null;
+            } | null>;
             nextToken?: string | null;
         } | null;
         createdAt: string;
@@ -680,14 +758,53 @@ export type DeleteResumeMutation = {
         skills: Array<string | null>;
         employment?: {
             __typename: 'ModelExperienceConnection';
+            items: Array<{
+                __typename: 'Experience';
+                id: string;
+                company: string;
+                role: string;
+                start_date: string;
+                end_date?: string | null;
+                description: Array<string | null>;
+                createdAt: string;
+                updatedAt: string;
+                resumeEmploymentId: string;
+                resumeProjectsId: string;
+                owner?: string | null;
+            } | null>;
             nextToken?: string | null;
         } | null;
         projects?: {
             __typename: 'ModelExperienceConnection';
+            items: Array<{
+                __typename: 'Experience';
+                id: string;
+                company: string;
+                role: string;
+                start_date: string;
+                end_date?: string | null;
+                description: Array<string | null>;
+                createdAt: string;
+                updatedAt: string;
+                resumeEmploymentId: string;
+                resumeProjectsId: string;
+                owner?: string | null;
+            } | null>;
             nextToken?: string | null;
         } | null;
         education?: {
             __typename: 'ModelEducationConnection';
+            items: Array<{
+                __typename: 'Education';
+                id: string;
+                school: string;
+                tier: EducationTiers;
+                completion: string;
+                createdAt: string;
+                updatedAt: string;
+                resumeEducationId?: string | null;
+                owner?: string | null;
+            } | null>;
             nextToken?: string | null;
         } | null;
         createdAt: string;
@@ -844,14 +961,53 @@ export type GetResumeQuery = {
         skills: Array<string | null>;
         employment?: {
             __typename: 'ModelExperienceConnection';
+            items: Array<{
+                __typename: 'Experience';
+                id: string;
+                company: string;
+                role: string;
+                start_date: string;
+                end_date?: string | null;
+                description: Array<string | null>;
+                createdAt: string;
+                updatedAt: string;
+                resumeEmploymentId: string;
+                resumeProjectsId: string;
+                owner?: string | null;
+            } | null>;
             nextToken?: string | null;
         } | null;
         projects?: {
             __typename: 'ModelExperienceConnection';
+            items: Array<{
+                __typename: 'Experience';
+                id: string;
+                company: string;
+                role: string;
+                start_date: string;
+                end_date?: string | null;
+                description: Array<string | null>;
+                createdAt: string;
+                updatedAt: string;
+                resumeEmploymentId: string;
+                resumeProjectsId: string;
+                owner?: string | null;
+            } | null>;
             nextToken?: string | null;
         } | null;
         education?: {
             __typename: 'ModelEducationConnection';
+            items: Array<{
+                __typename: 'Education';
+                id: string;
+                school: string;
+                tier: EducationTiers;
+                completion: string;
+                createdAt: string;
+                updatedAt: string;
+                resumeEducationId?: string | null;
+                owner?: string | null;
+            } | null>;
             nextToken?: string | null;
         } | null;
         createdAt: string;
@@ -878,6 +1034,18 @@ export type ListResumesQuery = {
             links: string;
             bio: string;
             skills: Array<string | null>;
+            employment?: {
+                __typename: 'ModelExperienceConnection';
+                nextToken?: string | null;
+            } | null;
+            projects?: {
+                __typename: 'ModelExperienceConnection';
+                nextToken?: string | null;
+            } | null;
+            education?: {
+                __typename: 'ModelEducationConnection';
+                nextToken?: string | null;
+            } | null;
             createdAt: string;
             updatedAt: string;
             owner?: string | null;
@@ -1083,14 +1251,53 @@ export type OnCreateResumeSubscription = {
         skills: Array<string | null>;
         employment?: {
             __typename: 'ModelExperienceConnection';
+            items: Array<{
+                __typename: 'Experience';
+                id: string;
+                company: string;
+                role: string;
+                start_date: string;
+                end_date?: string | null;
+                description: Array<string | null>;
+                createdAt: string;
+                updatedAt: string;
+                resumeEmploymentId: string;
+                resumeProjectsId: string;
+                owner?: string | null;
+            } | null>;
             nextToken?: string | null;
         } | null;
         projects?: {
             __typename: 'ModelExperienceConnection';
+            items: Array<{
+                __typename: 'Experience';
+                id: string;
+                company: string;
+                role: string;
+                start_date: string;
+                end_date?: string | null;
+                description: Array<string | null>;
+                createdAt: string;
+                updatedAt: string;
+                resumeEmploymentId: string;
+                resumeProjectsId: string;
+                owner?: string | null;
+            } | null>;
             nextToken?: string | null;
         } | null;
         education?: {
             __typename: 'ModelEducationConnection';
+            items: Array<{
+                __typename: 'Education';
+                id: string;
+                school: string;
+                tier: EducationTiers;
+                completion: string;
+                createdAt: string;
+                updatedAt: string;
+                resumeEducationId?: string | null;
+                owner?: string | null;
+            } | null>;
             nextToken?: string | null;
         } | null;
         createdAt: string;
@@ -1116,14 +1323,53 @@ export type OnUpdateResumeSubscription = {
         skills: Array<string | null>;
         employment?: {
             __typename: 'ModelExperienceConnection';
+            items: Array<{
+                __typename: 'Experience';
+                id: string;
+                company: string;
+                role: string;
+                start_date: string;
+                end_date?: string | null;
+                description: Array<string | null>;
+                createdAt: string;
+                updatedAt: string;
+                resumeEmploymentId: string;
+                resumeProjectsId: string;
+                owner?: string | null;
+            } | null>;
             nextToken?: string | null;
         } | null;
         projects?: {
             __typename: 'ModelExperienceConnection';
+            items: Array<{
+                __typename: 'Experience';
+                id: string;
+                company: string;
+                role: string;
+                start_date: string;
+                end_date?: string | null;
+                description: Array<string | null>;
+                createdAt: string;
+                updatedAt: string;
+                resumeEmploymentId: string;
+                resumeProjectsId: string;
+                owner?: string | null;
+            } | null>;
             nextToken?: string | null;
         } | null;
         education?: {
             __typename: 'ModelEducationConnection';
+            items: Array<{
+                __typename: 'Education';
+                id: string;
+                school: string;
+                tier: EducationTiers;
+                completion: string;
+                createdAt: string;
+                updatedAt: string;
+                resumeEducationId?: string | null;
+                owner?: string | null;
+            } | null>;
             nextToken?: string | null;
         } | null;
         createdAt: string;
@@ -1149,14 +1395,53 @@ export type OnDeleteResumeSubscription = {
         skills: Array<string | null>;
         employment?: {
             __typename: 'ModelExperienceConnection';
+            items: Array<{
+                __typename: 'Experience';
+                id: string;
+                company: string;
+                role: string;
+                start_date: string;
+                end_date?: string | null;
+                description: Array<string | null>;
+                createdAt: string;
+                updatedAt: string;
+                resumeEmploymentId: string;
+                resumeProjectsId: string;
+                owner?: string | null;
+            } | null>;
             nextToken?: string | null;
         } | null;
         projects?: {
             __typename: 'ModelExperienceConnection';
+            items: Array<{
+                __typename: 'Experience';
+                id: string;
+                company: string;
+                role: string;
+                start_date: string;
+                end_date?: string | null;
+                description: Array<string | null>;
+                createdAt: string;
+                updatedAt: string;
+                resumeEmploymentId: string;
+                resumeProjectsId: string;
+                owner?: string | null;
+            } | null>;
             nextToken?: string | null;
         } | null;
         education?: {
             __typename: 'ModelEducationConnection';
+            items: Array<{
+                __typename: 'Education';
+                id: string;
+                school: string;
+                tier: EducationTiers;
+                completion: string;
+                createdAt: string;
+                updatedAt: string;
+                resumeEducationId?: string | null;
+                owner?: string | null;
+            } | null>;
             nextToken?: string | null;
         } | null;
         createdAt: string;

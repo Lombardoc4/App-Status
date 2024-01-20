@@ -1,8 +1,10 @@
-import { useMemo } from 'react';
-import { useApplicationsData } from '../lib/useApplicationsData';
 import classNames from 'classnames';
+import { useMemo } from 'react';
 
-const calcRecentPercentage = (applications) => {
+import { Application } from '../API';
+import { useApplicationsData } from '../lib/useApplicationsData';
+
+const calcRecentPercentage = (applications: Application[]) => {
     const recentApps = applications.filter(
         (app) =>
             new Date(app.date_applied) > new Date(Date.now() - 7 * 86400000),
@@ -10,23 +12,26 @@ const calcRecentPercentage = (applications) => {
     const lessRecentApps = applications.filter(
         (app) =>
             new Date(app.date_applied) > new Date(Date.now() - 14 * 86400000) &&
-            app.date_applied < new Date(Date.now() - 7 * 86400000),
+            app.date_applied < new Date(Date.now() - 7 * 86400000).toString(),
     );
 
     if (lessRecentApps.length > 0) {
-        console.log('length');
+        // console.log('length');
         return (recentApps.length / lessRecentApps.length) * 100;
     } else {
         return recentApps.length * 100;
     }
 };
 
-const findRecurringCompanies = (applications) => {
-    const companyTotals = applications.reduce((acc, obj) => {
-        const { company } = obj;
-        acc[company] = (acc[company] || 0) + 1;
-        return acc;
-    }, {});
+const findRecurringCompanies = (applications: Application[]) => {
+    const companyTotals = applications.reduce(
+        (acc, obj) => {
+            const { company } = obj;
+            acc[company] = (acc[company] || 0) + 1;
+            return acc;
+        },
+        {} as { [key: string]: number },
+    );
 
     // Filter out items that occur only once
     const recurringCompanies = Object.fromEntries(
@@ -45,7 +50,7 @@ export const StatsPage = () => {
     const percentChange = calcRecentPercentage(applications);
 
     const recurringCompanies = findRecurringCompanies(applications);
-    console.log('recurringCompanies', recurringCompanies);
+    // console.log('recurringCompanies', recurringCompanies);
 
     // console.log('chartData', Object.values(chartData));
     // console.log('chartDays', chartDays);
@@ -91,7 +96,13 @@ export const StatsPage = () => {
     );
 };
 
-const StatCard = ({ children, className }) => {
+const StatCard = ({
+    children,
+    className,
+}: {
+    children: React.ReactNode;
+    className?: string;
+}) => {
     return (
         <div
             className={classNames(
