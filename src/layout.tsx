@@ -4,7 +4,7 @@ import { AlertModal } from './components/AlertModal';
 import { DashboardNav } from './components/DashboardNav';
 import Footer from './components/Footer';
 import Nav from './components/Nav';
-import { AlertProvider } from './lib/alertContext';
+import { AlertProvider } from './lib/useAlertProvider';
 
 function Layout() {
     return (

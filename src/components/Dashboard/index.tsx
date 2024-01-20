@@ -8,7 +8,7 @@ import { TableRow } from './TableRow';
 import { Application } from '../../API';
 import { useAlertContext } from '../../lib/alertContext';
 import { useApplicationsData } from '../../lib/useApplicationsData';
-import { EditProvider } from '../../lib/useEditContext';
+import { EditProvider } from '../../lib/useEditProvider';
 import { deleteApp } from '../../lib/utils';
 
 const sortByResponse = (a: Application, b: Application) => {
