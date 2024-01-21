@@ -11,7 +11,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 export const DashboardNav = () => {
     return (
-        <aside className='flex w-1/4 max-w-[240px] flex-col bg-blue-600 p-2 pb-4 text-white shadow-sm'>
+        <aside className='flex w-1/4 max-w-[260px] flex-col bg-blue-600 p-2 pb-4 text-white shadow-sm'>
             <div className='my-4 flex w-full flex-col gap-4'>
                 <NavLink
                     to='/dashboard'

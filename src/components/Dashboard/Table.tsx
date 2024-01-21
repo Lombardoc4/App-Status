@@ -15,22 +15,22 @@ export const Table = ({ title, children, closed = false }: TableProps) => {
     return (
         <div className='mb-8'>
             {/* Heading */}
-            <div className='mb-4 flex items-end'>
-                <h2
+            <div className='mb-4 flex items-center'>
+                <div
                     onClick={() => setHidden(!hidden)}
-                    className='rounded-md px-2 py-1 text-xl font-bold hover:cursor-pointer hover:bg-slate-300'
+                    className='flex items-center rounded-md px-2 py-1 text-xl font-bold hover:cursor-pointer hover:bg-slate-300'
                 >
                     <ChevronRightIcon
                         className={classNames(
                             'mr-2 inline h-6 w-6 duration-150',
-                            { 'rotate-90': !hidden },
+                            {
+                                'rotate-90': !hidden,
+                            },
                         )}
                     />
-                    {title}
-                </h2>
-                <p className='ms-auto italic text-slate-400'>
-                    {children.length} Total Apps
-                </p>
+                    <h2>{title}</h2>
+                </div>
+                <p className=' mx-2 text-slate-400'>({children.length})</p>
             </div>
 
             {!hidden && (

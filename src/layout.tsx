@@ -27,8 +27,8 @@ export default Layout;
 
 export function DashLayout({ children }: { children: React.ReactNode }) {
     return (
-        <div className=' w-full overflow-scroll bg-gradient-to-br from-blue-100 to-slate-100'>
-            <main>
+        <div className=' flex w-full flex-col overflow-scroll bg-gradient-to-br from-blue-100 to-slate-100'>
+            <main className='flex-1'>
                 <div className='container p-4'>{children}</div>
             </main>
             <Footer />

@@ -1,17 +1,15 @@
-import { useAuthenticator } from '@aws-amplify/ui-react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { signOut } from 'aws-amplify/auth';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 function Nav() {
-    const { authStatus, signOut } = useAuthenticator((context) => [
-        context.user,
-        context.authStatus,
-    ]);
-
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleSignOut = () => {
-        signOut();
-        navigate('/');
+        signOut().then(() => {
+            if (location.pathname === '/') navigate(0);
+            else navigate('/');
+        });
     };
     return (
         <div className='navbar bg-base-100'>
@@ -51,47 +49,34 @@ function Nav() {
                         </li>
                     </ul>
                 </div>
-                <ul className='menu menu-horizontal hidden px-1 sm:flex'>
-                    {authStatus === 'authenticated' ? (
-                        <li>
-                            <NavLink to='/dashboard'>Dashboard</NavLink>
-                        </li>
-                    ) : (
-                        <li>
-                            <NavLink to='/login'>Login</NavLink>
-                        </li>
-                    )}
-                </ul>
-                {authStatus === 'authenticated' && (
-                    <div className='dropdown dropdown-end hidden sm:inline-block'>
-                        <div
-                            tabIndex={0}
-                            role='button'
-                            className='avatar btn btn-circle btn-ghost'
-                        >
-                            <div className='w-10 rounded-full'>
-                                <img
-                                    alt='Tailwind CSS Navbar component'
-                                    src='https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg'
-                                />
-                            </div>
+                <div className='dropdown dropdown-end hidden sm:inline-block'>
+                    <div
+                        tabIndex={0}
+                        role='button'
+                        className='avatar btn btn-circle btn-ghost'
+                    >
+                        <div className='w-10 rounded-full'>
+                            <img
+                                alt='Tailwind CSS Navbar component'
+                                src='https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg'
+                            />
                         </div>
-                        <ul
-                            tabIndex={0}
-                            className='menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow'
-                        >
-                            <li>
-                                <Link to='/account' className='justify-between'>
-                                    Profile
-                                    <span className='badge'>New</span>
-                                </Link>
-                            </li>
-                            <li>
-                                <a onClick={handleSignOut}>Logout</a>
-                            </li>
-                        </ul>
                     </div>
-                )}
+                    <ul
+                        tabIndex={0}
+                        className='menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow'
+                    >
+                        <li>
+                            <Link to='/account' className='justify-between'>
+                                Profile
+                                <span className='badge'>New</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <a onClick={handleSignOut}>Logout</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     );
