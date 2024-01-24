@@ -101,13 +101,15 @@ export const ApplicationsHeader = ({
             </div>
 
             {showForm && (
-                <ApplicationCreateForm
-                    onSuccess={closeForm}
-                    onCancel={closeForm}
-                    onError={() => {
-                        // console.log('error', error);
-                    }}
-                />
+                <div className='mb-2 max-w-96 rounded bg-white'>
+                    <ApplicationCreateForm
+                        onSuccess={closeForm}
+                        onCancel={closeForm}
+                        onError={() => {
+                            // console.log('error', error);
+                        }}
+                    />
+                </div>
             )}
         </>
     );
