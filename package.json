@@ -30,6 +30,7 @@
         "@commitlint/cli": "latest",
         "@commitlint/config-conventional": "latest",
         "@release-it/conventional-changelog": "latest",
+        "@types/node": "^20.11.6",
         "@types/react": "latest",
         "@types/react-dom": "latest",
         "@typescript-eslint/eslint-plugin": "latest",

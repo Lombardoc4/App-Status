@@ -229,33 +229,6 @@ export default function ApplicationCreateForm(props) {
         hasError={errors.date_applied?.hasError}
         {...getOverrideProps(overrides, "date_applied")}
       ></TextField>
-      <CheckboxField
-        label="Today"
-        name="fieldName"
-        value="fieldName"
-        checked={Field0}
-        onChange={(e) => {
-          let value = e.target.checked;
-          if (onChange) {
-            const modelFields = {
-              role,
-              company,
-              date_applied,
-              Field0: value,
-            };
-            const result = onChange(modelFields);
-            value = result?.Field0 ?? value;
-          }
-          if (errors.Field0?.hasError) {
-            runValidationTasks("Field0", value);
-          }
-          setField0(value);
-        }}
-        onBlur={() => runValidationTasks("Field0", Field0)}
-        errorMessage={errors.Field0?.errorMessage}
-        hasError={errors.Field0?.hasError}
-        {...getOverrideProps(overrides, "Field0")}
-      ></CheckboxField>
       <Divider
         orientation="horizontal"
         {...getOverrideProps(overrides, "SectionalElement0")}

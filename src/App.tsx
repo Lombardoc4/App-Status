@@ -115,7 +115,7 @@ function App() {
                             </Link>
                         )}
                     </div>
-                    {authStatus !== 'authenticated' && (
+                    {authStatus === 'unauthenticated' && (
                         <LoginForm formSubmit={formSubmit} />
                     )}
                 </div>

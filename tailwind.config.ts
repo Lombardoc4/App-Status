@@ -5,5 +5,9 @@ export default {
     theme: {
         extend: {},
     },
+    daisyui: {
+        themes: ['winter', 'dim', 'nord', 'sunset', 'night'],
+        darkTheme: 'night',
+    },
     plugins: [require('daisyui')],
 } satisfies Config;

@@ -12,6 +12,7 @@ module.exports = {
         'plugin:react/jsx-runtime',
         'plugin:react-hooks/recommended',
         'plugin:@typescript-eslint/recommended',
+        // 'plugin:tailwindcss/recommended',
         'prettier',
     ],
     ignorePatterns: [
@@ -26,6 +27,9 @@ module.exports = {
         'graphql',
         'aws-exports.js',
         'src/API.ts',
+
+        // CSS
+        'src/*.css',
     ],
     parser: '@typescript-eslint/parser',
     parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },

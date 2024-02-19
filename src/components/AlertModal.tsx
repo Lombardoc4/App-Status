@@ -11,7 +11,7 @@ export const AlertModal = () => {
         'px-6 py-4 shadow-md rounded-md',
         { 'bg-green-400 shadow-green-400': alert.type === 'success' },
         { 'bg-red-400 shadow-red-400': alert.type === 'error' },
-        { 'bg-white shadow-blue-400': alert.type === 'bulk' },
+        { 'bg-white shadow-base-400': alert.type === 'bulk' },
     );
 
     const handleClick = () => {
@@ -26,18 +26,18 @@ export const AlertModal = () => {
                 <div className={modalClasses}>
                     <div
                         onClick={handleClick}
-                        className='flex items-center gap-2'
+                        className='flex items-center gap-4'
                     >
                         {alert.type === 'success' && (
                             <>
-                                <CheckIcon className='h-6 w-6' />
+                                <CheckIcon className='size-6' />
                                 {alert.msg}
                             </>
                         )}
 
                         {alert.type === 'error' && (
                             <>
-                                <ExclamationCircleIcon className='h-6 w-6' />
+                                <ExclamationCircleIcon className='size-6' />
                                 {alert.msg}
                             </>
                         )}

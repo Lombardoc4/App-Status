@@ -83,7 +83,7 @@ export const DefaultCell = ({ val, type, toggleEdit }: DefaultCellProps) => {
             <div className='w-5/6 truncate' title={val}>
                 {val}
             </div>
-            {hover && <PencilIcon onClick={toggleEdit} className='h-4 w-4' />}
+            {hover && <PencilIcon onClick={toggleEdit} className='size-4' />}
         </div>
     );
 };
@@ -159,7 +159,7 @@ export const EditCell = ({ val, submit, type, cancel }: EditCellProps) => {
     return (
         <div className='edit-cell flex items-center justify-between gap-2 border border-blue-600 bg-blue-100 pr-2 text-left'>
             {inputComponent()}
-            <CheckCircleIcon onClick={handleSubmit} className='h-8 w-8' />
+            <CheckCircleIcon onClick={handleSubmit} className='size-8' />
         </div>
     );
 };

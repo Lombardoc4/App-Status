@@ -18,7 +18,7 @@ export const BulkAction = ({
             </p>
             <button
                 onClick={deselectApps}
-                className='flex items-center gap-1 rounded-md bg-slate-200 px-3 py-2'
+                className='rounded-md bg-base-100 px-3 py-2'
             >
                 Deselect
             </button>
@@ -26,7 +26,7 @@ export const BulkAction = ({
                 onClick={deleteApps}
                 className='flex items-center gap-1 rounded-md bg-red-600 px-3 py-2 text-white'
             >
-                Remove <TrashIcon className='h-5 w-5' />
+                Remove <TrashIcon className='size-5' />
             </button>
         </>
     );

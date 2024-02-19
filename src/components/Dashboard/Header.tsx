@@ -61,9 +61,9 @@ export const ApplicationsHeader = ({
             <div className='mb-8 flex w-full gap-2'>
                 <button
                     onClick={() => setShowForm(true)}
-                    className='flex items-center gap-1 rounded-md bg-blue-600 px-3 py-2 text-white'
+                    className='flex items-center gap-1 rounded-md bg-base-content px-3 py-2 text-base-100'
                 >
-                    Add <PlusCircleIcon className='h-5 w-5' />
+                    Add <PlusCircleIcon className='size-5' />
                 </button>
 
                 <input
@@ -101,7 +101,7 @@ export const ApplicationsHeader = ({
             </div>
 
             {showForm && (
-                <div className='mb-2 max-w-96 rounded bg-white'>
+                <div className='mb-2 max-w-96 rounded bg-base-300'>
                     <ApplicationCreateForm
                         onSuccess={closeForm}
                         onCancel={closeForm}

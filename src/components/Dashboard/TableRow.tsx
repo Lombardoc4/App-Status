@@ -58,11 +58,13 @@ export const TableRow = ({ app, toggleSelect, selected }: TableRowProps) => {
                     />
                 )}
             </div>
-            <div className=' my-1 grid flex-1 grid-cols-5 overflow-hidden rounded-full bg-white'>
-                <div className='col-span-2'>{app.role}</div>
-                <div>{app.company}</div>
-                <div>{app.response}</div>
-                <div>{convertDate(app.date_applied)}</div>
+            <div className='my-1 grid flex-1 grid-cols-5 overflow-hidden rounded-full bg-base-300'>
+                <div className='col-span-2 truncate p-2 px-4'>{app.role}</div>
+                <div className='truncate p-2 px-3'>{app.company}</div>
+                <div className='truncate p-2 px-3'>{app.response}</div>
+                <div className='truncate p-2 px-3'>
+                    {convertDate(app.date_applied)}
+                </div>
                 {/* {Object.entries(initialVal).map(([key, value]) => {
                     return (
                         <TableCell

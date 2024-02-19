@@ -7,22 +7,24 @@ import {
     RocketLaunchIcon,
 } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+
+import Footer from './Footer';
 
 export const DashboardNav = () => {
     return (
-        <aside className='flex w-1/4 max-w-[260px] flex-col bg-blue-600 p-2 pb-4 text-white shadow-sm'>
-            <div className='my-4 flex w-full flex-col gap-4'>
+        <aside className=' col-span-1 flex flex-col bg-base-100 text-base-content shadow-sm'>
+            <nav className='my-4 grid w-full gap-4 p-2'>
                 <NavLink
                     to='/dashboard'
                     className={({ isActive }) =>
                         classNames(
-                            'flex w-full gap-2 rounded-md px-3 py-2 hover:bg-blue-700 ',
+                            'flex w-full gap-2 rounded-md px-3 py-2 hover:bg-base-content hover:text-base-100',
                             { 'font-bold': isActive },
                         )
                     }
                 >
-                    <ChartPieIcon className='h-6 w-6' />
+                    <ChartPieIcon className='size-6' />
                     Dashboard
                 </NavLink>
 
@@ -30,12 +32,12 @@ export const DashboardNav = () => {
                     to='/stats'
                     className={({ isActive }) =>
                         classNames(
-                            'flex w-full gap-2 rounded-md px-3 py-2 hover:bg-blue-700 ',
+                            'flex w-full gap-2 rounded-md px-3 py-2 hover:bg-base-content hover:text-base-100',
                             { 'font-bold': isActive },
                         )
                     }
                 >
-                    <ChartBarSquareIcon className='h-6 w-6' />
+                    <ChartBarSquareIcon className='size-6' />
                     Stats
                 </NavLink>
 
@@ -43,12 +45,12 @@ export const DashboardNav = () => {
                     to='/saved'
                     className={({ isActive }) =>
                         classNames(
-                            'flex w-full gap-2 rounded-md px-3 py-2 hover:bg-blue-700 ',
+                            'flex w-full gap-2 rounded-md px-3 py-2 hover:bg-base-content hover:text-base-100',
                             { 'font-bold': isActive },
                         )
                     }
                 >
-                    <ClockIcon className='h-6 w-6' />
+                    <ClockIcon className='size-6' />
                     Saved for later
                 </NavLink>
 
@@ -56,12 +58,12 @@ export const DashboardNav = () => {
                     to='/resume-generator'
                     className={({ isActive }) =>
                         classNames(
-                            'flex w-full gap-2 rounded-md px-3 py-2 hover:bg-blue-700 ',
+                            'flex w-full gap-2 rounded-md px-3 py-2 hover:bg-base-content hover:text-base-100 ',
                             { 'font-bold': isActive },
                         )
                     }
                 >
-                    <DocumentTextIcon className='h-6 w-6' />
+                    <DocumentTextIcon className='size-6' />
                     Resume Generator
                 </NavLink>
 
@@ -69,25 +71,30 @@ export const DashboardNav = () => {
                     to='/interview-prep'
                     className={({ isActive }) =>
                         classNames(
-                            'flex w-full gap-2 rounded-md px-3 py-2 hover:bg-blue-700 ',
+                            'flex w-full gap-2 rounded-md px-3 py-2 hover:bg-base-content hover:text-base-100 ',
                             { 'font-bold': isActive },
                         )
                     }
                 >
-                    <RocketLaunchIcon className='h-6 w-6' />
+                    <RocketLaunchIcon className='size-6' />
                     Interview Prep
                 </NavLink>
-            </div>
 
-            {/* Lower Nav */}
-            <div className='mt-auto flex flex-col gap-4'>
-                <Link
+                <NavLink
                     to='/help'
-                    className='flex gap-2 rounded-xl border bg-blue-600 px-3 py-2 text-white shadow-inner '
+                    className={({ isActive }) =>
+                        classNames(
+                            'flex w-full gap-2 rounded-md px-3 py-2 hover:bg-base-content hover:text-base-100 ',
+                            { 'font-bold': isActive },
+                        )
+                    }
                 >
-                    <QuestionMarkCircleIcon className='h-6 w-6' />
+                    <QuestionMarkCircleIcon className='size-6' />
                     Help
-                </Link>
+                </NavLink>
+            </nav>
+            <div className='mt-auto'>
+                <Footer />
             </div>
         </aside>
     );

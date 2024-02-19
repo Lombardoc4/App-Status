@@ -92,6 +92,10 @@ export const StatsPage = () => {
                     </div>
                 ))}
             </StatCard>
+            <StatCard>
+                <h2 className='text-xl font-bold'>Calendar</h2>
+                <p>Mark each date with # of applications</p>
+            </StatCard>
         </div>
     );
 };
@@ -106,7 +110,7 @@ const StatCard = ({
     return (
         <div
             className={classNames(
-                'rounded-md bg-white p-4 shadow-sm shadow-blue-400',
+                'rounded-md bg-base-content p-4 text-base-100 shadow shadow-base-100',
                 className,
             )}
         >
